@@ -118,8 +118,11 @@ def show_home_page(root, username="Admin", role="Quản trị viên"):
 # HÀM MỞ MODULE CON
 # ==========================
 def open_student_module(root):
-    messagebox.showinfo("👨‍🎓 Quản lý Sinh viên", "Mở giao diện Quản lý Sinh viên!")
-
+    try:
+        from app.modules.students import show_student_management
+        show_student_management(root)
+    except ImportError:
+        messagebox.showerror("Lỗi", "Không thể mở module Quản lý Sinh viên.")
 def open_staff_module(root):
     messagebox.showinfo("👨‍🔧 Quản lý Nhân viên", "Mở giao diện Quản lý Nhân viên!")
 
