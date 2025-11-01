@@ -123,8 +123,15 @@ def open_student_module(root):
         show_student_management(root)
     except ImportError:
         messagebox.showerror("Lỗi", "Không thể mở module Quản lý Sinh viên.")
+
+        
+
 def open_staff_module(root):
-    messagebox.showinfo("👨‍🔧 Quản lý Nhân viên", "Mở giao diện Quản lý Nhân viên!")
+    try:
+        from app.modules.staffs import show_staff_management
+        show_staff_management(root)
+    except ImportError as e:
+        messagebox.showerror("Lỗi Import", f"Không thể mở module Quản lý Nhân viên.\n{e}")
 
 def open_building_module(root):
     messagebox.showinfo("🏢 Quản lý Tòa nhà", "Mở giao diện Quản lý Tòa nhà!")
@@ -140,7 +147,7 @@ def open_contract_module(root):
 
 def go_back_to_login(root):
     messagebox.showinfo("Đăng xuất", "Quay lại màn hình đăng nhập!")
-    # ở đây bạn có thể gọi: from app.ui.login_frame import show_login; show_login(root)
+    from app.ui.login import show_login; show_login(root)
 
 
 
