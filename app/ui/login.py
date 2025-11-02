@@ -83,7 +83,7 @@ def show_login(root):
             return
 
         # ==== Kiểm tra tài khoản (tạm thời giả lập) ====
-        if ttk == "admin" and mk == "123":
+        if ttk == "admin" and mk == "123456":
             messagebox.showinfo("Thành công", f"Chào mừng Nguyễn Minh Triết quay lại hệ thống!")
             show_home_page(root, username="Admin", role="Quản trị viên")
         else:
