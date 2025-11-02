@@ -225,7 +225,7 @@ def show_student_management(root):
     tree.column("ngay_sinh", width=100, anchor="center", stretch=tk.NO)
     
     tree.heading("gioi_tinh", text="Giới tính")
-    tree.column("gioi_tinh", width=110, anchor="center", stretch=tk.NO)
+    tree.column("gioi_tinh", width=90, anchor="center", stretch=tk.NO)
     
     tree.heading("cmnd_cccd", text="CMND/CCCD")
     tree.column("cmnd_cccd", width=120, stretch=tk.NO)
