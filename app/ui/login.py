@@ -24,9 +24,9 @@ def show_login(root):
              fg="#1e40af", bg="white").pack(pady=(0, 20))
 
     # === Nhập CMND/CCCD ===
-    tk.Label(frame, text="CMND / CCCD:", font=("Segoe UI", 11), bg="white", anchor="w").pack(fill="x")
-    entry_cmnd = tk.Entry(frame, font=("Segoe UI", 11))
-    entry_cmnd.pack(fill="x", ipady=6, pady=(0, 10))
+    tk.Label(frame, text="Tên Tài Khoản:", font=("Segoe UI", 11), bg="white", anchor="w").pack(fill="x")
+    entry_ttk = tk.Entry(frame, font=("Segoe UI", 11))
+    entry_ttk.pack(fill="x", ipady=6, pady=(0, 10))
 
     # === Nhập mật khẩu ===
     tk.Label(frame, text="Mật khẩu:", font=("Segoe UI", 11), bg="white", anchor="w").pack(fill="x")
@@ -68,11 +68,11 @@ def show_login(root):
 
     # === Xử lý đăng nhập ===
     def dang_nhap():
-        cmnd = entry_cmnd.get().strip()
+        ttk = entry_ttk.get().strip()
         mk = entry_mk.get().strip()
         ma_nhap = entry_ma.get().strip()
 
-        if not cmnd or not mk or not ma_nhap:
+        if not ttk or not mk or not ma_nhap:
             messagebox.showwarning("Thiếu thông tin", "Vui lòng nhập đầy đủ thông tin!")
             return
 
@@ -83,11 +83,11 @@ def show_login(root):
             return
 
         # ==== Kiểm tra tài khoản (tạm thời giả lập) ====
-        if cmnd == "123456789" and mk == "admin":
+        if ttk == "admin" and mk == "123":
             messagebox.showinfo("Thành công", f"Chào mừng Nguyễn Minh Triết quay lại hệ thống!")
             show_home_page(root, username="Admin", role="Quản trị viên")
         else:
-            messagebox.showerror("Đăng nhập thất bại", "Sai CMND/CCCD hoặc mật khẩu!")
+            messagebox.showerror("Đăng nhập thất bại", "Sai Tên tài khoản hoặc mật khẩu!")
 
     # === Nút đăng nhập ===
     tk.Button(frame, text="🔑 Đăng nhập", font=("Segoe UI", 12, "bold"),

@@ -75,10 +75,10 @@ def show_home_page(root, username="Admin", role="Quản trị viên"):
     buttons = [
         ("👨‍🎓 Quản lý Sinh viên", "Theo dõi, thêm mới và cập nhật hồ sơ sinh viên", lambda: open_student_module(root)),
         ("👨‍🔧 Quản lý Nhân viên", "Quản lý thông tin và ca trực nhân viên", lambda: open_staff_module(root)),
-        ("🏢 Quản lý Tòa nhà", "Xem, thêm, sửa thông tin các tòa ký túc xá", lambda: open_building_module(root)),
+        ("🏢 Quản lý Dịch vụ", "Xem, thêm, sửa thông tin các dịch vụ", lambda: open_service_module(root)),
         ("🚪 Quản lý Phòng", "Theo dõi số lượng, tình trạng, và phân bổ phòng", lambda: open_room_module(root)),
         ("💰 Quản lý Hóa đơn", "Tạo và theo dõi hóa đơn tiền phòng, điện nước", lambda: open_bill_module(root)),
-        ("📑 Quản lý Hợp đồng", "Lưu trữ và theo dõi hợp đồng thuê phòng", lambda: open_contract_module(root)),
+        ("📑 Quản lý Thanh Toán", "Lưu trữ và theo dõi thanh toán", lambda: open_pay_module(root)),
     ]
 
     # ====== TẠO LƯỚI CÁC CARD ======
@@ -133,8 +133,8 @@ def open_staff_module(root):
     except ImportError as e:
         messagebox.showerror("Lỗi Import", f"Không thể mở module Quản lý Nhân viên.\n{e}")
 
-def open_building_module(root):
-    messagebox.showinfo("🏢 Quản lý Tòa nhà", "Mở giao diện Quản lý Tòa nhà!")
+def open_service_module(root):
+    messagebox.showinfo("🏢 Quản lý Dịch vụ", "Mở giao diện Quản lý Dịch vụ!")
 
 def open_room_module(root):
     messagebox.showinfo("🚪 Quản lý Phòng", "Mở giao diện Quản lý Phòng!")
@@ -142,11 +142,11 @@ def open_room_module(root):
 def open_bill_module(root):
     messagebox.showinfo("💰 Quản lý Hóa đơn", "Mở giao diện Quản lý Hóa đơn!")
 
-def open_contract_module(root):
-    messagebox.showinfo("📑 Quản lý Hợp đồng", "Mở giao diện Quản lý Hợp đồng!")
+def open_pay_module(root):
+    messagebox.showinfo("📑 Quản lý Thanh Toán", "Mở giao diện Quản lý Thanh Toán!")
 
 def go_back_to_login(root):
-    messagebox.showinfo("Đăng xuất", "Quay lại màn hình đăng nhập!")
+    messagebox.showinfo("Đăng xuất", "Bạn chắc chắn muốn đăng xuất?")
     from app.ui.login import show_login; show_login(root)
 
 
