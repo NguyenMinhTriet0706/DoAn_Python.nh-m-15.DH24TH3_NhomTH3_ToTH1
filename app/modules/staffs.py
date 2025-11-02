@@ -212,7 +212,7 @@ def show_staff_management(root):
     
     # --- THAY ĐỔI: Định nghĩa cột cho Nhân viên ---
     tree.heading("ma_nv", text="Mã NV")
-    tree.column("ma_nv", width=70, minwidth=70, anchor="center", stretch=tk.NO)
+    tree.column("ma_nv", width=90, minwidth=70, anchor="center", stretch=tk.NO)
     
     tree.heading("ho_ten", text="Họ tên")
     tree.column("ho_ten", width=160, minwidth=160, stretch=tk.NO)
@@ -242,10 +242,10 @@ def show_staff_management(root):
     tree.column("chuc_vu", width=100, minwidth=100, stretch=tk.NO)
     
     tree.heading("ngay_vao_lam", text="Ngày vào làm")
-    tree.column("ngay_vao_lam", width=110, minwidth=100, anchor="center", stretch=tk.NO)
+    tree.column("ngay_vao_lam", width=120, minwidth=100, anchor="center", stretch=tk.NO)
     
     tree.heading("ca_truc", text="Ca trực")
-    tree.column("ca_truc", width=90, minwidth=80, anchor="center", stretch=tk.NO)
+    tree.column("ca_truc", width=95, minwidth=80, anchor="center", stretch=tk.NO)
 
     tree.heading("luong_cb", text="Lương CB")
     tree.column("luong_cb", width=100, minwidth=100, anchor="e", stretch=tk.NO)
