@@ -1,20 +1,30 @@
-﻿CREATE DATABASE QUANLYKTX 
+﻿-- ===========================================
+-- TẠO DATABASE QUẢN LÝ KÝ TÚC XÁ
+-- ===========================================
+CREATE DATABASE QUANLYKTX;
 GO
 USE QUANLYKTX;
 GO
 
--- ============================================
+-- ===========================================
 -- 1️⃣ BẢNG TÀI KHOẢN
--- ============================================
+-- ===========================================
 CREATE TABLE taikhoan (
     ten_dang_nhap NVARCHAR(50) PRIMARY KEY,
     mat_khau NVARCHAR(100) NOT NULL,
     vai_tro NVARCHAR(20) DEFAULT 'admin'
 );
+GO
 
--- ============================================
+-- DỮ LIỆU MẪU TÀI KHOẢN
+INSERT INTO taikhoan VALUES
+('admin', N'123456', N'admin')
+
+GO
+
+-- ===========================================
 -- 2️⃣ BẢNG SINH VIÊN
--- ============================================
+-- ===========================================
 CREATE TABLE sinhvien (
     ma_sv NVARCHAR(10) PRIMARY KEY,
     ho_ten NVARCHAR(100),
@@ -31,10 +41,23 @@ CREATE TABLE sinhvien (
     trang_thai NVARCHAR(50),
     ghi_chu NVARCHAR(255)
 );
+GO
 
--- ============================================
+-- DỮ LIỆU MẪU SINH VIÊN
+INSERT INTO sinhvien VALUES
+('SV01', N'Nguyễn Văn An', '2003-05-12', N'Nam', '079123456', '0905111222', 'an.nguyen@agu.edu.vn', N'An Giang', N'Công nghệ thông tin', N'DH22TH1', 'P101', '2022-09-01', N'Đang ở', N''),
+('SV02', N'Lê Thị Bình', '2004-08-10', N'Nữ', '089654321', '0912111333', 'binh.le@agu.edu.vn', N'Đồng Tháp', N'Kinh tế', N'DH22KT1', 'P102', '2023-01-10', N'Đang ở', N''),
+('SV03', N'Phạm Văn Cường', '2002-11-23', N'Nam', '077234567', '0988776655', 'cuong.pham@agu.edu.vn', N'Cần Thơ', N'Công nghệ thông tin', N'DH22TH2', 'P103', '2022-09-01', N'Đang ở', N''),
+('SV04', N'Trần Thị Dung', '2004-03-30', N'Nữ', '066543210', '0977888999', 'dung.tran@agu.edu.vn', N'Kiên Giang', N'Sư phạm Toán', N'DH22SP1', 'P104', '2023-02-15', N'Đang ở', N''),
+('SV05', N'Võ Minh Đức', '2003-12-05', N'Nam', '099111222', '0933444555', 'duc.vo@agu.edu.vn', N'Hậu Giang', N'Kỹ thuật phần mềm', N'DH21CT3', 'P105', '2022-09-01', N'Đang ở', N''),
+('SV06', N'Nguyễn Thị Hoa', '2002-07-14', N'Nữ', '055444333', '0944555666', 'hoa.nguyen@agu.edu.vn', N'An Giang', N'Công nghệ thực phẩm', N'DH20TP1', 'P201', '2022-09-01', N'Đang ở', N''),
+('SV07', N'Lý Văn Hưng', '2001-06-22', N'Nam', '033222111', '0911222333', 'hung.ly@agu.edu.vn', N'Đồng Tháp', N'Nông Nghiệp', N'DH21NN1', 'P202', '2021-09-01', N'Đang ở', N''),
+('SV08', N'Trần Ngọc Lan', '2003-09-18', N'Nữ', '044777888', '0922111000', 'lan.tran@agu.edu.vn', N'Cần Thơ', N'Ngôn ngữ Anh', N'DH21NA1', 'P203', '2022-09-01', N'Đang ở', N'');
+GO
+
+-- ===========================================
 -- 3️⃣ BẢNG NHÂN VIÊN
--- ============================================
+-- ===========================================
 CREATE TABLE nhanvien (
     ma_nv NVARCHAR(10) PRIMARY KEY,
     ho_ten NVARCHAR(100),
@@ -52,10 +75,23 @@ CREATE TABLE nhanvien (
     trang_thai_lv NVARCHAR(50),
     ghi_chu NVARCHAR(255)
 );
+GO
 
--- ============================================
--- 4️⃣ BẢNG PHÒNG
--- ============================================
+-- DỮ LIỆU MẪU NHÂN VIÊN
+INSERT INTO nhanvien VALUES
+('NV01', N'Trần Văn Hùng', '1985-05-15', N'Nam', '079123456', '0905111222', 'tvhung@gmail.com', N'An Giang', N'123 Trần Hưng Đạo, P. Mỹ Bình', N'Quản lý', '2020-01-10', N'Hành chính', 10000000, N'Đang làm việc', N''),
+('NV02', N'Lê Thị Lan', '1990-08-20', N'Nữ', '088765432', '0912333444', 'ltlan@gmail.com', N'Đồng Tháp', N'456 Lý Thường Kiệt, P. Mỹ Xuyên', N'Vệ sinh', '2021-03-05', N'Sáng (6-14h)', 5500000, N'Đang làm việc', N''),
+('NV03', N'Phạm Văn Nam', '1995-11-10', N'Nam', '066543210', '0987555666', 'pvnam@gmail.com', N'Cần Thơ', N'789 Nguyễn Trãi, P. Mỹ Long', N'Bảo vệ', '2022-07-20', N'Đêm (22-6h)', 7000000, N'Đang làm việc', N''),
+('NV04', N'Nguyễn Thị Hoa', '1988-03-02', N'Nữ', '099888777', '0333444555', 'nthoa@gmail.com', N'Kiên Giang', N'101 Tôn Đức Thắng, P. Bình Khánh', N'Vệ sinh', '2021-12-01', N'Chiều (14-22h)', 5500000, N'Tạm nghỉ', N'Nghỉ thai sản'),
+('NV05', N'Lý Văn Toàn', '1992-06-30', N'Nam', '055444333', '0777888999', 'lvtoan@gmail.com', N'An Giang', N'222 Hà Hoàng Hổ, P. Mỹ Xuyên', N'Kỹ thuật', '2021-02-15', N'Hành chính', 8000000, N'Đang làm việc', N'Bảo trì điện nước'),
+('NV06', N'Đặng Thị Hằng', '1994-09-12', N'Nữ', '044555666', '0911666777', 'hdang@gmail.com', N'Hậu Giang', N'23 Nguyễn Du, P. Mỹ Bình', N'Lễ tân', '2021-08-01', N'Sáng (6-14h)', 6000000, N'Đang làm việc', N''),
+('NV07', N'Trương Minh Phúc', '1987-01-18', N'Nam', '033666777', '0933666777', 'mphuc@gmail.com', N'Cần Thơ', N'89 Trần Quang Diệu, P. Mỹ Long', N'Bảo vệ', '2020-05-10', N'Đêm (22-6h)', 7200000, N'Đang làm việc', N''),
+('NV08', N'Võ Ngọc Yến', '1996-11-21', N'Nữ', '088777999', '0944888999', 'vyen@gmail.com', N'Đồng Tháp', N'66 Lê Lợi, P. Mỹ Phước', N'Kế toán', '2022-03-15', N'Hành chính', 9000000, N'Đang làm việc', N'');
+GO
+
+-- ===========================================
+-- 4️⃣ BẢNG PHÒNG (giữ nguyên, thêm dữ liệu mẫu 8 dòng)
+-- ===========================================
 CREATE TABLE phong (
     ma_phong NVARCHAR(10) PRIMARY KEY,
     toa_nha NVARCHAR(10),
@@ -66,119 +102,109 @@ CREATE TABLE phong (
     trang_thai NVARCHAR(50),
     ghi_chu NVARCHAR(255)
 );
+GO
 
--- ============================================
--- 5️⃣ BẢNG DỊCH VỤ
--- ============================================
+INSERT INTO phong VALUES
+('P101', 'A', N'Thường', 4, 2, 1200000, N'Còn trống', N'Phòng thoáng mát'),
+('P102', 'A', N'Máy lạnh', 4, 4, 1500000, N'Đầy', N'Phòng có máy lạnh'),
+('P103', 'A', N'Thường', 4, 3, 1200000, N'Đang sử dụng', N'Phòng có ban công'),
+('P104', 'B', N'Máy lạnh', 4, 4, 1600000, N'Đầy', N'Phòng có tủ lạnh'),
+('P105', 'B', N'Thường', 4, 1, 1100000, N'Còn trống', N'Gần khu vệ sinh'),
+('P201', 'C', N'Thường', 6, 6, 1000000, N'Đầy', N'Phòng lớn'),
+('P202', 'C', N'Máy lạnh', 6, 5, 1700000, N'Đang sử dụng', N'Phòng rộng rãi'),
+('P203', 'C', N'Thường', 4, 2, 1150000, N'Còn trống', N'Phòng sạch đẹp');
+GO
+
+-- ===========================================
+-- 5️⃣ BẢNG DỊCH VỤ (8 dòng mẫu)
+-- ===========================================
 CREATE TABLE dichvu (
     ma_dv NVARCHAR(10) PRIMARY KEY,
     ten_dv NVARCHAR(100),
+    loai_dv NVARCHAR(50),
+    don_vi NVARCHAR(20),
     don_gia DECIMAL(10,0),
-    don_vi NVARCHAR(50)
+    ngay_ap_dung DATE DEFAULT GETDATE(),
+    trang_thai NVARCHAR(50) DEFAULT N'Hoạt động',
+    mo_ta NVARCHAR(255)
 );
+GO
 
--- ============================================
--- 6️⃣ BẢNG HÓA ĐƠN
--- ============================================
+INSERT INTO dichvu VALUES
+('DV01', N'Tiền điện', N'Điện', N'kWh', 3500, GETDATE(), N'Hoạt động', N'Tính theo công tơ'),
+('DV02', N'Tiền nước', N'Nước', N'm³', 15000, GETDATE(), N'Hoạt động', N'Tính theo đồng hồ nước'),
+('DV03', N'Internet', N'Mạng', N'Tháng', 100000, GETDATE(), N'Hoạt động', N'Cáp quang tốc độ cao'),
+('DV04', N'Rác thải', N'Phí môi trường', N'Tháng', 20000, GETDATE(), N'Hoạt động', N'Thu gom rác hàng ngày'),
+('DV05', N'Gửi xe', N'Phí dịch vụ', N'Tháng', 50000, GETDATE(), N'Hoạt động', N'Xe máy'),
+('DV06', N'Máy giặt', N'Dịch vụ thêm', N'Lần', 10000, GETDATE(), N'Hoạt động', N'Tự phục vụ'),
+('DV07', N'Vệ sinh phòng', N'Dịch vụ thêm', N'Lần', 20000, GETDATE(), N'Hoạt động', N'Dọn dẹp theo yêu cầu'),
+('DV08', N'Dịch vụ thêm khác', N'Dịch vụ thêm', N'Lần', 15000, GETDATE(), N'Hoạt động', N'Thuê thêm thiết bị');
+GO
+
+-- ===========================================
+-- 6️⃣ BẢNG HÓA ĐƠN (8 dòng mẫu)
+-- ===========================================
 CREATE TABLE hoadon (
     ma_hd NVARCHAR(10) PRIMARY KEY,
     ma_sv NVARCHAR(10),
-    ngay_lap DATE,
+    ma_phong NVARCHAR(10),
+    ngay_lap DATE DEFAULT GETDATE(),
+    thang INT,
+    nam INT,
     tong_tien DECIMAL(12,0),
-    nguoi_lap NVARCHAR(100),
-    FOREIGN KEY (ma_sv) REFERENCES sinhvien(ma_sv)
+    trang_thai NVARCHAR(50) DEFAULT N'Chưa thanh toán',
+    phuong_thuc_tt NVARCHAR(50) DEFAULT N'Tiền mặt',
+    ngay_thanh_toan DATE NULL,
+    ghi_chu NVARCHAR(255),
+    FOREIGN KEY (ma_phong) REFERENCES phong(ma_phong)
 );
+GO
 
--- ============================================
--- 7️⃣ BẢNG THANH TOÁN
--- ============================================
+INSERT INTO hoadon VALUES
+('HD01', 'SV01', 'P101', GETDATE(), 10, 2025, 2000000, N'Chưa thanh toán', N'Tiền mặt', NULL, N''),
+('HD02', 'SV02', 'P102', GETDATE(), 10, 2025, 2300000, N'Đã thanh toán', N'Chuyển khoản', GETDATE(), N'Đã thu đủ'),
+('HD03', 'SV03', 'P103', GETDATE(), 9, 2025, 1800000, N'Chưa thanh toán', N'Tiền mặt', NULL, N''),
+('HD04', 'SV04', 'P104', GETDATE(), 10, 2025, 2500000, N'Đã thanh toán', N'Tiền mặt', GETDATE(), N'Đã nộp'),
+('HD05', 'SV05', 'P105', GETDATE(), 8, 2025, 1600000, N'Chưa thanh toán', N'Tiền mặt', NULL, N'Nợ 1 tháng'),
+('HD06', 'SV06', 'P201', GETDATE(), 10, 2025, 3000000, N'Đã thanh toán', N'Chuyển khoản', GETDATE(), N'Đủ tiền'),
+('HD07', 'SV07', 'P202', GETDATE(), 10, 2025, 2100000, N'Đang xử lý', N'Chuyển khoản', NULL, N'Đang xác minh'),
+('HD08', 'SV08', 'P203', GETDATE(), 10, 2025, 1950000, N'Chưa thanh toán', N'Tiền mặt', NULL, N'');
+INSERT INTO hoadon VALUES 
+('HD09', 'SV09','P203', GETDATE(),9,2025,2000000,N'Chưa Thanh Toán',N'Chuyển Khoản',NULL,N'');
+GO
+
+-- ===========================================
+-- 7️⃣ BẢNG THANH TOÁN (8 dòng mẫu)
+-- ===========================================
 CREATE TABLE thanhtoan (
     ma_tt NVARCHAR(10) PRIMARY KEY,
     ma_hd NVARCHAR(10),
     ma_dv NVARCHAR(10),
     so_luong DECIMAL(10,2),
-    thanh_tien DECIMAL(12,0),
+    don_gia DECIMAL(10,0),
+    thanh_tien AS (so_luong * don_gia) PERSISTED,
+    thang INT,
+    nam INT,
+    ngay_tt DATE DEFAULT GETDATE(),
+    trang_thai NVARCHAR(50) DEFAULT N'Chưa xác nhận',
+    nguoi_thuc_hien NVARCHAR(100),
+    ghi_chu NVARCHAR(255),
     FOREIGN KEY (ma_hd) REFERENCES hoadon(ma_hd),
     FOREIGN KEY (ma_dv) REFERENCES dichvu(ma_dv)
 );
+GO
 
----------------------------------------------------------
--- ============================================
--- 🔹 BẢNG TÀI KHOẢN
--- ============================================
-DELETE FROM taikhoan WHERE ten_dang_nhap = N'admin';
-INSERT INTO taikhoan (ten_dang_nhap, mat_khau, vai_tro)
-VALUES (N'admin', N'123456', N'admin');
-
-
--- ============================================
--- 🔹 BẢNG SINH VIÊN
--- ============================================
-INSERT INTO SINHVIEN (ma_sv, ho_ten, ngay_sinh, gioi_tinh, cmnd_cccd, sdt, email, que_quan, khoa, lop, phong, ngay_vao, trang_thai, ghi_chu)
-VALUES
-('SV001', N'Nguyễn Văn An', '2003-05-12', N'Nam', N'079123456', N'0905111222', N'an.nguyen@agu.edu.vn', N'An Giang', N'Công nghệ thông tin', N'DH22TH1', N'P101', '2022-09-01', N'Đang ở', N''),
-('SV002', N'Lê Thị Bình', '2004-08-10', N'Nữ', N'089654321', N'0912111333', N'binh.le@agu.edu.vn', N'Đồng Tháp', N'Kinh tế', N'DH22KT1', N'P102', '2023-01-10', N'Đang ở', N''),
-('SV003', N'Phạm Văn Cường', '2002-11-23', N'Nam', N'077234567', N'0988776655', N'cuong.pham@agu.edu.vn', N'Cần Thơ', N'Công nghệ thông tin', N'DH22TH2', N'P201', '2022-09-01', N'Đang ở', N''),
-('SV004', N'Trần Thị Dung', '2004-03-30', N'Nữ', N'066543210', N'0977888999', N'dung.tran@agu.edu.vn', N'Kiên Giang', N'Sư phạm Toán', N'DH22SP1', N'P202', '2023-02-15', N'Đang ở', N''),
-('SV005', N'Võ Minh Đức', '2003-12-05', N'Nam', N'099111222', N'0933444555', N'duc.vo@agu.edu.vn', N'Hậu Giang', N'Kỹ thuật phần mềm', N'DH21CT3', N'P203', '2022-09-01', N'Đang ở', N''),
-('SV006', N'Nguyễn Thị Hoa', '2002-07-14', N'Nữ', N'055444333', N'0944555666', N'hoa.nguyen@agu.edu.vn', N'An Giang', N'Công nghệ thực phẩm', N'DH20TP1', N'P301', '2022-09-01', N'Đang ở', N''),
-('SV007', N'Lý Văn Hưng', '2001-06-22', N'Nam', N'033222111', N'0911222333', N'hung.ly@agu.edu.vn', N'Đồng Tháp', N'Nông Nghiệp', N'DH21NN1', N'P302', '2021-09-01', N'Đang ở', N''),
-('SV008', N'Trần Ngọc Lan', '2003-09-18', N'Nữ', N'044777888', N'0922111000', N'lan.tran@agu.edu.vn', N'Cần Thơ', N'Ngôn ngữ Anh', N'DH21NA1', N'P303', '2022-09-01', N'Đang ở', N''),
-('SV009', N'Phạm Quang Minh', '2004-01-25', N'Nam', N'099888777', N'0977445566', N'minh.pham@agu.edu.vn', N'Kiên Giang', N'Kế toán', N'DH22KT2', N'P304', '2023-02-01', N'Đang ở', N''),
-('SV010', N'Đỗ Thị Như', '2003-04-09', N'Nữ', N'088111222', N'0955666777', N'nhu.do@agu.edu.vn', N'An Giang', N'Quản trị du lịch và lữ hành', N'DH21DL1', N'P305', '2022-09-01', N'Đang ở', N'');
+INSERT INTO thanhtoan (
+    ma_tt, ma_hd, ma_dv, so_luong, don_gia, thang, nam, ngay_tt, trang_thai, nguoi_thuc_hien, ghi_chu
+) VALUES
+('TT01', 'HD01', 'DV01', 120, 3500, 10, 2025, GETDATE(), N'Đã xác nhận', N'Nguyễn Văn A', N'Tiền điện tháng 10'),
+('TT02', 'HD01', 'DV02', 10, 15000, 10, 2025, GETDATE(), N'Đã xác nhận', N'Nguyễn Văn A', N'Tiền nước tháng 10'),
+('TT03', 'HD02', 'DV03', 1, 100000, 10, 2025, GETDATE(), N'Đã xác nhận', N'Lê Thị B', N'Internet tháng 10'),
+('TT04', 'HD03', 'DV05', 1, 50000, 9, 2025, GETDATE(), N'Đã xác nhận', N'Phạm Minh C', N'Phí gửi xe tháng 9'),
+('TT05', 'HD04', 'DV04', 1, 20000, 10, 2025, GETDATE(), N'Đang xử lý', N'Trần Thị D', N'Rác thải tháng 10'),
+('TT06', 'HD05', 'DV01', 100, 3500, 8, 2025, GETDATE(), N'Chưa xác nhận', N'Võ Minh Đ', N'Tiền điện tháng 8'),
+('TT07', 'HD06', 'DV03', 1, 100000, 10, 2025, GETDATE(), N'Đã xác nhận', N'Nguyễn Thị H', N'Internet tháng 10'),
+('TT08', 'HD07', 'DV02', 15, 15000, 10, 2025, GETDATE(), N'Đang xử lý', N'Lý Văn H', N'Tiền nước tháng 10');
 
 
-
--- ============================================
--- 🔹 BẢNG NHÂN VIÊN
--- ============================================
-INSERT INTO NHANVIEN (ma_nv, ho_ten, ngay_sinh, gioi_tinh, cmnd_cccd, sdt, email, que_quan, dia_chi, chuc_vu, ngay_vao_lam, ca_truc, luong_cb, trang_thai_lv, ghi_chu)
-VALUES
-('NV001', N'Trần Văn Hùng', '1985-05-15', N'Nam', N'079123456', N'0905111222', N'tvhung@gmail.com', N'An Giang', N'123 Trần Hưng Đạo, P. Mỹ Bình', N'Quản lý', '2020-01-10', N'Hành chính', N'10000000', N'Đang làm việc', N''),
-('NV002', N'Lê Thị Lan', '1990-08-20', N'Nữ', N'088765432', N'0912333444', N'ltlan@gmail.com', N'Đồng Tháp', N'456 Lý Thường Kiệt, P. Mỹ Xuyên', N'Vệ sinh', '2021-03-05', N'Sáng (6-14h)', N'5500000', N'Đang làm việc', N''),
-('NV003', N'Phạm Văn Nam', '1995-11-10', N'Nam', N'066543210', N'0987555666', N'pvnam@gmail.com', N'Cần Thơ', N'789 Nguyễn Trãi, P. Mỹ Long', N'Bảo vệ', '2022-07-20', N'Đêm (22-6h)', N'7000000', N'Đang làm việc', N''),
-('NV004', N'Nguyễn Thị Hoa', '1988-03-02', N'Nữ', N'099888777', N'0333444555', N'nthoa@gmail.com', N'Kiên Giang', N'101 Tôn Đức Thắng, P. Bình Khánh', N'Vệ sinh', '2021-12-01', N'Chiều (14-22h)', N'5500000', N'Tạm nghỉ', N'Nghỉ thai sản'),
-('NV005', N'Lý Văn Toàn', '1992-06-30', N'Nam', N'055444333', N'0777888999', N'lvtoan@gmail.com', N'An Giang', N'222 Hà Hoàng Hổ, P. Mỹ Xuyên', N'Kỹ thuật', '2021-02-15', N'Hành chính', N'8000000', N'Đang làm việc', N'Bảo trì điện nước'),
-('NV006', N'Đặng Thị Hằng', '1994-09-12', N'Nữ', N'044555666', N'0911666777', N'hdang@gmail.com', N'Hậu Giang', N'23 Nguyễn Du, P. Mỹ Bình', N'Lễ tân', '2021-08-01', N'Sáng (6-14h)', N'6000000', N'Đang làm việc', N''),
-('NV007', N'Trương Minh Phúc', '1987-01-18', N'Nam', N'033666777', N'0933666777', N'mphuc@gmail.com', N'Cần Thơ', N'89 Trần Quang Diệu, P. Mỹ Long', N'Bảo vệ', '2020-05-10', N'Đêm (22-6h)', N'7200000', N'Đang làm việc', N''),
-('NV008', N'Võ Ngọc Yến', '1996-11-21', N'Nữ', N'088777999', N'0944888999', N'vyen@gmail.com', N'Đồng Tháp', N'66 Lê Lợi, P. Mỹ Phước', N'Kế toán', '2022-03-15', N'Hành chính', N'9000000', N'Đang làm việc', N''),
-('NV009', N'Phan Thanh Sơn', '1989-02-26', N'Nam', N'077333222', N'0922444555', N'tson@gmail.com', N'An Giang', N'120 Nguyễn Văn Cừ, P. Mỹ Bình', N'Bảo trì', '2021-05-01', N'Hành chính', N'8500000', N'Đang làm việc', N''),
-('NV010', N'Nguyễn Thị Kim', '1993-10-04', N'Nữ', N'099222333', N'0955777888', N'ntkim@gmail.com', N'Cần Thơ', N'34 Phan Bội Châu, P. Bình Đức', N'Vệ sinh', '2022-01-10', N'Chiều (14-22h)', N'5400000', N'Đang làm việc', N'');
-
--- ============================================
--- 🔹 BẢNG PHÒNG
--- ============================================
-INSERT INTO phong VALUES
-(N'P101', N'A', N'Thường', 4, 2, 500000, N'Đang sử dụng', N''),
-(N'P102', N'A', N'Máy lạnh', 4, 3, 700000, N'Đang sử dụng', N'Có điều hòa'),
-(N'P103', N'B', N'VIP', 2, 1, 1000000, N'Còn trống', N'Phòng rộng rãi');
-
--- ============================================
--- 🔹 BẢNG DỊCH VỤ
--- ============================================
-INSERT INTO dichvu VALUES
-(N'DV001', N'Điện', 3500, N'kWh'),
-(N'DV002', N'Nước', 15000, N'm3'),
-(N'DV003', N'Internet', 100000, N'tháng'),
-(N'DV004', N'Gửi xe', 50000, N'tháng');
-
--- ============================================
--- 🔹 BẢNG HÓA ĐƠN
--- ============================================
-INSERT INTO hoadon VALUES
-(N'HD001', N'SV001', '2024-09-30', 850000, N'Admin'),
-(N'HD002', N'SV002', '2024-09-30', 900000, N'Admin');
-
--- ============================================
--- 🔹 BẢNG THANH TOÁN
--- ============================================
-INSERT INTO thanhtoan VALUES
-(N'TT001', N'HD001', N'DV001', 50, 175000),
-(N'TT002', N'HD001', N'DV002', 3, 45000),
-(N'TT003', N'HD001', N'DV003', 1, 100000),
-(N'TT004', N'HD002', N'DV001', 60, 210000),
-(N'TT005', N'HD002', N'DV004', 1, 50000);
-
-
-
-select *from sinhvien;
+select *from hoadon

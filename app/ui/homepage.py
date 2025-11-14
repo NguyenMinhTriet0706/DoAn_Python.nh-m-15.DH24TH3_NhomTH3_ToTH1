@@ -69,7 +69,7 @@ def show_home_page(root, username="Admin", role="Quản trị viên"):
 
     # ====== KHUNG CHỨC NĂNG ======
     features_frame = tk.Frame(main, bg="#f0f4ff")
-    features_frame.pack(expand=True, pady=40)
+    features_frame.pack(expand=True, pady=40, fill="both")
 
     # Danh sách chức năng
     buttons = [
@@ -77,24 +77,29 @@ def show_home_page(root, username="Admin", role="Quản trị viên"):
         ("👨‍🔧 Quản lý Nhân viên", "Quản lý thông tin và ca trực nhân viên", lambda: open_staff_module(root)),
         ("🏢 Quản lý Dịch vụ", "Xem, thêm, sửa thông tin các dịch vụ", lambda: open_service_module(root)),
         ("🚪 Quản lý Phòng", "Theo dõi số lượng, tình trạng, và phân bổ phòng", lambda: open_room_module(root)),
-        ("💰 Quản lý Hóa đơn", "Tạo và theo dõi hóa đơn tiền phòng, điện nước", lambda: open_bill_module(root)),
-        ("📑 Quản lý Thanh Toán", "Lưu trữ và theo dõi thanh toán", lambda: open_pay_module(root)),
+        ("💰 Quản lý Hóa đơn", "Tạo và theo dõi hóa đơn tiền phòng, điện nước", lambda: open_invoice_module(root)),
+        ("📑 Quản lý Thanh Toán", "Lưu trữ và theo dõi thanh toán", lambda: open_payment_module(root)),
     ]
 
-    # ====== TẠO LƯỚI CÁC CARD ======
+    # ====== TẠO LƯỚI CÁC CARD (ĐẢM BẢO BẰNG NHAU) ======
+    rows = 2
+    cols = 3
     for i, (title, desc, cmd) in enumerate(buttons):
-        row, col = divmod(i, 3)
+        row, col = divmod(i, cols)
 
         card = tk.Frame(features_frame, bg="white", bd=0, relief="ridge")
-        card.grid(row=row, column=col, padx=30, pady=25, ipadx=10, ipady=10)
+        card.grid(row=row, column=col, padx=20, pady=20, sticky="nsew")
         card.configure(highlightthickness=1, highlightbackground="#cbd5e1")
 
-        ttk.Button(card, text=title, style="Card.TButton", command=cmd).pack(padx=10, pady=10)
-        tk.Label(card, text=desc, bg="white", fg="#475569", font=("Segoe UI", 10)).pack(padx=15, pady=5)
+        # Nút và mô tả
+        ttk.Button(card, text=title, style="Card.TButton", command=cmd).pack(padx=20, pady=(20, 10), fill="x")
+        tk.Label(card, text=desc, bg="white", fg="#475569", font=("Segoe UI", 10), wraplength=200, justify="center").pack(padx=15, pady=(0,20))
 
-    # Căn đều lưới
-    for i in range(3):
-        features_frame.grid_columnconfigure(i, weight=1)
+    # Căn đều lưới và cho card co giãn
+    for c in range(cols):
+        features_frame.grid_columnconfigure(c, weight=1)
+    for r in range(rows):
+        features_frame.grid_rowconfigure(r, weight=1)
 
     # ====== FOOTER ======
     footer = tk.Frame(root, bg="#1e3a8a", height=50)
@@ -124,8 +129,6 @@ def open_student_module(root):
     except ImportError:
         messagebox.showerror("Lỗi", "Không thể mở module Quản lý Sinh viên.")
 
-        
-
 def open_staff_module(root):
     try:
         from app.modules.staffs import show_staff_management
@@ -134,20 +137,34 @@ def open_staff_module(root):
         messagebox.showerror("Lỗi Import", f"Không thể mở module Quản lý Nhân viên.\n{e}")
 
 def open_service_module(root):
-    messagebox.showinfo("🏢 Quản lý Dịch vụ", "Mở giao diện Quản lý Dịch vụ!")
+    try:
+        from app.modules.services import show_service_management
+        show_service_management(root)
+    except ImportError as e:
+        messagebox.showerror("Lỗi Import", f"Không thể mở module Quản lý Dịch vụ.\n{e}")
 
 def open_room_module(root):
-    messagebox.showinfo("🚪 Quản lý Phòng", "Mở giao diện Quản lý Phòng!")
+    try:
+        from app.modules.rooms import show_room_management
+        show_room_management(root)
+    except ImportError as e:
+        messagebox.showerror("Lỗi Import", f"Không thể mở module Quản lý Phòng.\n{e}")
 
-def open_bill_module(root):
-    messagebox.showinfo("💰 Quản lý Hóa đơn", "Mở giao diện Quản lý Hóa đơn!")
+def open_invoice_module(root):
+    try:
+        from app.modules.invoices import show_invoice_management
+        show_invoice_management(root)
+    except ImportError as e:
+        messagebox.showerror("Lỗi Import", f"Không thể mở module Quản lý Hóa đơn.\n{e}")
 
-def open_pay_module(root):
-    messagebox.showinfo("📑 Quản lý Thanh Toán", "Mở giao diện Quản lý Thanh Toán!")
+def open_payment_module(root):
+   
+    try:
+        from app.modules.payments import show_payment_management
+        show_payment_management(root)
+    except ImportError as e:
+        messagebox.showerror("Lỗi Import", f"Không thể mở module Quản lý Thanh Toán.\n{e}")
 
 def go_back_to_login(root):
     messagebox.showinfo("Đăng xuất", "Bạn chắc chắn muốn đăng xuất?")
     from app.ui.login import show_login; show_login(root)
-
-
-
