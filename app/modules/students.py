@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-
+from app.db import fetch_all, fetch_one, execute_non_query  # sử dụng DB thật
 # ==================================
 # KHAI BÁO BIẾN TOÀN CỤC
 # ==================================
@@ -387,18 +387,16 @@ def clear_form(set_focus=False, clear_tree_selection=True):
 
 def populate_sample_data():
     global master_data_list, tree
-    
-    # DANH SÁCH DỮ LIỆU ĐÃ ĐƯỢC SẮP XẾP LẠI CHO ĐÚNG THỨ TỰ
-    master_data_list = [
-        # (ma_sv, ho_ten, ngay_sinh, gioi_tinh, cmnd_cccd, sdt, email, que_quan, khoa, lop, phong, ngay_vao, trang_thai, ghi_chu)
-        ("SV001", "Nguyễn Văn An", "10/10/2003", "Nam", "089123456", "0912345678", "nva@gmail.com", "An Giang", "Công nghệ thông tin", "DH22TH", "A101", "05/09/2022", "Đang ở", ""),
-        ("SV002", "Trần Thị Bình", "05/12/2003", "Nữ", "089654321", "0987654321", "ttb@gmail.com", "Kiên Giang", "Kinh tế", "DH22KT", "A102", "05/09/2022", "Đang ở", "Ưu tiên"),
-        ("SV003", "Lê Văn Cường", "20/03/2003", "Nam", "077123123", "0905123123", "lvc@gmail.com", "Đồng Tháp", "Nông nghiệp", "DH22NN", "B201", "10/09/2022", "Đang ở", ""),
-        ("SV004", "Phạm Thị Dung", "15/07/2003", "Nữ", "065321321", "0345678901", "ptd@gmail.com", "Cần Thơ", "Sư phạm", "DH22SP", "B202", "10/09/2022", "Đã rời KTX", "Chuyển ra ngoài"),
-        ("SV005", "Võ Minh Hải", "30/01/2003", "Nam", "090555666", "0777888999", "vmh@gmail.com", "An Giang", "Công nghệ thông tin", "DH22TH", "A101", "15/09/2022", "Đang ở", "")
-    ]
-    
+    master_data_list = []
+
+    query = "SELECT ma_sv, ho_ten, ngay_sinh, gioi_tinh, cmnd_cccd, sdt, email, que_quan, khoa, lop, phong, ngay_vao, trang_thai, ghi_chu FROM sinhvien"
+    rows = fetch_all(query)
+
+    for row in rows:
+        master_data_list.append(tuple(row))
+
     refresh_all_data()
+
 
 # --- CÁC HÀM CRUD (SỬA LỖI PARENT) ---
 
@@ -414,50 +412,59 @@ def add_student():
     global master_data_list, tree, entries
     data = get_form_data()
     ma_sv, ho_ten = data[0], data[1]
+
     root_window = get_root_window()
-    
     if not ma_sv or not ho_ten:
         messagebox.showwarning("Thiếu thông tin", "Mã SV và Họ tên là bắt buộc.", parent=root_window)
         return
 
-    for student in master_data_list:
-        if student[0] == ma_sv:
-            messagebox.showerror("Lỗi", f"Mã SV [ {ma_sv} ] đã tồn tại!", parent=root_window)
-            return
-            
+    # Kiểm tra database
+    existing = fetch_one("SELECT ma_sv FROM sinhvien WHERE ma_sv=?", (ma_sv,))
+    if existing:
+        messagebox.showerror("Lỗi", f"Mã SV [ {ma_sv} ] đã tồn tại!", parent=root_window)
+        return
+
+    # Thêm vào database
+    query = """INSERT INTO sinhvien(ma_sv, ho_ten, ngay_sinh, gioi_tinh, cmnd_cccd, sdt, email, que_quan, khoa, lop, phong, ngay_vao, trang_thai, ghi_chu)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+    execute_non_query(query, data)
+
     master_data_list.append(data)
     tree.insert("", "end", values=data)
-    
-    last_item = tree.get_children()[-1]
-    tree.selection_set(last_item)
-    tree.focus(last_item)
-    tree.see(last_item)
-    
+
     messagebox.showinfo("Thành công", f"Đã thêm sinh viên [ {ho_ten} ].", parent=root_window)
     clear_form(set_focus=True)
+
 
 def update_student():
     global master_data_list, tree
     root_window = get_root_window()
-    
+
     selected_item = tree.selection()
     if not selected_item:
         messagebox.showwarning("Chưa chọn", "Vui lòng chọn một sinh viên để sửa.", parent=root_window)
         return
     selected_item = selected_item[0]
-    
+
     new_data = get_form_data()
     ma_sv = new_data[0]
-    
+
+    # Cập nhật database
+    query = """UPDATE sinhvien
+               SET ho_ten=?, ngay_sinh=?, gioi_tinh=?, cmnd_cccd=?, sdt=?, email=?, que_quan=?, khoa=?, lop=?, phong=?, ngay_vao=?, trang_thai=?, ghi_chu=?
+               WHERE ma_sv=?"""
+    execute_non_query(query, new_data[1:] + (ma_sv,))
+
+    # Cập nhật GUI
     tree.item(selected_item, values=new_data)
-    
     for i, student in enumerate(master_data_list):
         if student[0] == ma_sv:
             master_data_list[i] = new_data
             break
-            
+
     messagebox.showinfo("Thành công", f"Đã cập nhật sinh viên [ {ma_sv} ].", parent=root_window)
     clear_form()
+
     
 def delete_student():
     global master_data_list, tree
@@ -468,11 +475,14 @@ def delete_student():
         messagebox.showwarning("Chưa chọn", "Vui lòng chọn một sinh viên để xóa.", parent=root_window)
         return
     selected_item = selected_item[0]
-    
+
     values = tree.item(selected_item, "values")
     ma_sv, ho_ten = values[0], values[1]
-    
+
     if messagebox.askyesno("Xác nhận", f"Bạn có chắc chắn muốn xóa sinh viên:\n\n{ma_sv} - {ho_ten}?", parent=root_window):
+        # Xóa database
+        execute_non_query("DELETE FROM sinhvien WHERE ma_sv=?", (ma_sv,))
+        # Xóa GUI
         tree.delete(selected_item)
         for student in master_data_list:
             if student[0] == ma_sv:
@@ -480,6 +490,7 @@ def delete_student():
                 break
         messagebox.showinfo("Thành công", f"Đã xóa sinh viên [ {ma_sv} ].", parent=root_window)
         clear_form()
+
 
 def search_students():
     global search_entry, master_data_list, tree

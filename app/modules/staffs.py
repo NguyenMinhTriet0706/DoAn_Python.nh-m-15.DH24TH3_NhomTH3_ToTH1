@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-
+from app.db import fetch_all, fetch_one, execute_non_query  # sử dụng DB thật
 # ==================================
 # KHAI BÁO BIẾN TOÀN CỤC
 # ==================================
@@ -337,10 +337,19 @@ def get_form_data():
     data = []
     for key in ALL_FIELD_KEYS:
         if key in entries:
-            data.append(entries[key].get())
+            value = entries[key].get()
+            # Nếu là lương cơ bản → chuyển sang số
+            if key == "luong_cb":
+                value = value.replace(",", "").strip()  # loại dấu phẩy nếu nhập "10,000,000"
+                if value == "":
+                    value = 0
+                else:
+                    value = float(value)
+            data.append(value)
         else:
             data.append("")
     return tuple(data)
+
 
 # Giữ nguyên logic on_select (đã sửa lỗi)
 def on_staff_select(event):
@@ -370,14 +379,19 @@ def on_staff_select(event):
 # --- THAY ĐỔI: Dữ liệu mẫu cho Nhân viên ---
 def populate_sample_data():
     global master_data_list, tree
-    master_data_list = [
-        # (ma_nv, ho_ten, ngay_sinh, gioi_tinh, cmnd_cccd, sdt, email, que_quan, dia_chi, chuc_vu, ngay_vao_lam, ca_truc, luong_cb, trang_thai_lv, ghi_chu)
-        ("NV001", "Trần Văn Hùng", "15/05/1985", "Nam", "079123456", "0905111222", "tvhung@gmail.com", "An Giang", "123 Trần Hưng Đạo, P. Mỹ Bình", "Quản lý", "10/01/2020", "Hành chính", "10,000,000", "Đang làm việc", ""),
-        ("NV002", "Lê Thị Lan", "20/08/1990", "Nữ", "088765432", "0912333444", "ltlan@gmail.com", "Đồng Tháp", "456 Lý Thường Kiệt, P. Mỹ Xuyên", "Vệ sinh", "05/03/2021", "Sáng (6-14h)", "5,500,000", "Đang làm việc", ""),
-        ("NV003", "Phạm Văn Nam", "10/11/1995", "Nam", "066543210", "0987555666", "pvnam@gmail.com", "Cần Thơ", "789 Nguyễn Trãi, P. Mỹ Long", "Bảo vệ", "20/07/2022", "Đêm (22-6h)", "7,000,000", "Đang làm việc", ""),
-        ("NV004", "Nguyễn Thị Hoa", "02/03/1988", "Nữ", "099888777", "0333444555", "nthoa@gmail.com", "Kiên Giang", "101 Tôn Đức Thắng, P. Bình Khánh", "Vệ sinh", "01/12/2021", "Chiều (14-22h)", "5,500,000", "Tạm nghỉ", "Nghỉ thai sản"),
-        ("NV005", "Lý Văn Toàn", "30/06/1992", "Nam", "055444333", "0777888999", "lvtoan@gmail.com", "An Giang", "222 Hà Hoàng Hổ, P. Mỹ Xuyên", "Kỹ thuật", "15/02/2021", "Hành chính", "8,000,000", "Đang làm việc", "Bảo trì điện nước")
-    ]
+    master_data_list = []
+
+    query = """
+    SELECT ma_nv, ho_ten, ngay_sinh, gioi_tinh, cmnd_cccd, 
+           sdt, email, que_quan, dia_chi, chuc_vu, ngay_vao_lam, ca_truc, 
+           luong_cb, trang_thai_lv, ghi_chu
+    FROM nhanvien
+    """
+    rows = fetch_all(query)
+
+    for row in rows:
+        master_data_list.append(tuple(row))
+
     refresh_all_data()
 
 # --- CÁC HÀM CRUD (Đã đổi tên và thông báo) ---
@@ -397,18 +411,24 @@ def add_staff():
         messagebox.showwarning("Thiếu thông tin", "Mã NV và Họ tên là bắt buộc.", parent=root_window)
         return
 
-    for staff in master_data_list:
-        if staff[0] == ma_nv:
-            messagebox.showerror("Lỗi", f"Mã NV [ {ma_nv} ] đã tồn tại!", parent=root_window)
-            return
-            
+    # Kiểm tra mã NV đã tồn tại trong DB chưa
+    existing = fetch_all("SELECT ma_nv FROM nhanvien WHERE ma_nv=?", (ma_nv,))
+    if existing:
+        messagebox.showerror("Lỗi", f"Mã NV [ {ma_nv} ] đã tồn tại!", parent=root_window)
+        return
+
+    # Thêm vào database
+    query = """
+    INSERT INTO nhanvien(ma_nv, ho_ten, ngay_sinh, gioi_tinh, cmnd_cccd, 
+                         sdt, email, que_quan, dia_chi, chuc_vu, ngay_vao_lam, 
+                         ca_truc, luong_cb, trang_thai_lv, ghi_chu)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """
+    execute_non_query(query, data)
+
+    # Thêm vào Treeview + list
     master_data_list.append(data)
     tree.insert("", "end", values=data)
-    
-    last_item = tree.get_children()[-1]
-    tree.selection_set(last_item)
-    tree.focus(last_item)
-    tree.see(last_item)
     
     messagebox.showinfo("Thành công", f"Đã thêm nhân viên [ {ho_ten} ].", parent=root_window)
     clear_form(set_focus=True)
@@ -425,9 +445,19 @@ def update_staff():
     
     new_data = get_form_data()
     ma_nv = new_data[0]
-    
+
+    # Cập nhật database
+    query = """
+    UPDATE nhanvien
+    SET ho_ten=?, ngay_sinh=?, gioi_tinh=?, cmnd_cccd=?,
+        sdt=?, email=?, que_quan=?, dia_chi=?, chuc_vu=?, ngay_vao_lam=?,
+        ca_truc=?, luong_cb=?, trang_thai_lv=?, ghi_chu=?
+    WHERE ma_nv=?
+    """
+    execute_non_query(query, new_data[1:] + (ma_nv,))
+
+    # Cập nhật Treeview + list
     tree.item(selected_item, values=new_data)
-    
     for i, staff in enumerate(master_data_list):
         if staff[0] == ma_nv:
             master_data_list[i] = new_data
@@ -450,6 +480,9 @@ def delete_staff():
     ma_nv, ho_ten = values[0], values[1]
     
     if messagebox.askyesno("Xác nhận", f"Bạn có chắc chắn muốn xóa nhân viên:\n\n{ma_nv} - {ho_ten}?", parent=root_window):
+        # Xóa database
+        execute_non_query("DELETE FROM nhanvien WHERE ma_nv=?", (ma_nv,))
+        # Xóa Treeview + list
         tree.delete(selected_item)
         for staff in master_data_list:
             if staff[0] == ma_nv:
@@ -457,6 +490,7 @@ def delete_staff():
                 break
         messagebox.showinfo("Thành công", f"Đã xóa nhân viên [ {ma_nv} ].", parent=root_window)
         clear_form()
+
 
 def search_staff():
     global search_entry, master_data_list, tree

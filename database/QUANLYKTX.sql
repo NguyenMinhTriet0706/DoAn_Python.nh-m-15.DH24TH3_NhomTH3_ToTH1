@@ -207,4 +207,4 @@ INSERT INTO thanhtoan (
 ('TT08', 'HD07', 'DV02', 15, 15000, 10, 2025, GETDATE(), N'Đang xử lý', N'Lý Văn H', N'Tiền nước tháng 10');
 
 
-select *from hoadon
+select *from nhanvien
