@@ -23,17 +23,17 @@ def show_login(root):
     tk.Label(frame, text="ĐĂNG NHẬP HỆ THỐNG", font=("Segoe UI", 16, "bold"),
              fg="#1e40af", bg="white").pack(pady=(0, 20))
 
-    # === Nhập CMND/CCCD ===
-    tk.Label(frame, text="Tên Tài Khoản:", font=("Segoe UI", 11), bg="white", anchor="w").pack(fill="x")
+    #  Nhập Tên Tài Khoản
+    tk.Label(frame, text="Tên tài Khoản:", font=("Segoe UI", 11), bg="white", anchor="w").pack(fill="x")
     entry_ttk = tk.Entry(frame, font=("Segoe UI", 11))
     entry_ttk.pack(fill="x", ipady=6, pady=(0, 10))
 
-    # === Nhập mật khẩu ===
+    #  Nhập mật khẩu
     tk.Label(frame, text="Mật khẩu:", font=("Segoe UI", 11), bg="white", anchor="w").pack(fill="x")
     entry_mk = tk.Entry(frame, font=("Segoe UI", 11), show="*")
     entry_mk.pack(fill="x", ipady=6, pady=(0, 5))
 
-    # === Nút hiện/ẩn mật khẩu ===
+    # Nút hiện/ẩn mật khẩu 
     show_var = tk.BooleanVar(value=False)
 
     def toggle_password():
@@ -42,8 +42,7 @@ def show_login(root):
     tk.Checkbutton(frame, text="Hiện mật khẩu", variable=show_var,
                    bg="white", font=("Segoe UI", 9),
                    command=toggle_password).pack(anchor="w")
-
-    # === Mã xác thực ===
+    # Mã xác thực
     tk.Label(frame, text="Mã xác thực:", font=("Segoe UI", 11), bg="white", anchor="w").pack(fill="x", pady=(10, 0))
     ma_xac_thuc = tk.StringVar()
 
@@ -66,7 +65,7 @@ def show_login(root):
     tk.Button(frame, text="↻ Làm mới mã", font=("Segoe UI", 10, "bold"),
               bg="#e0e7ff", relief="flat", command=tao_ma).pack(pady=(0, 10))
 
-    # === Xử lý đăng nhập ===
+    # Xử lý đăng nhập 
     def dang_nhap():
         ttk = entry_ttk.get().strip()
         mk = entry_mk.get().strip()
@@ -82,7 +81,7 @@ def show_login(root):
             entry_ma.delete(0, tk.END)
             return
 
-        # ==== Kiểm tra tài khoản (tạm thời giả lập) ====
+        # ==== Kiểm tra tài khoản ====
         if ttk == "admin" and mk == "123456":
             messagebox.showinfo("Thành công", f"Chào mừng Nguyễn Minh Triết quay lại hệ thống!")
             show_home_page(root, username="Admin", role="Quản trị viên")
