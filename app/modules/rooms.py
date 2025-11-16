@@ -7,12 +7,11 @@ tree = None
 add_btn = update_btn = delete_btn = None
 search_entry = None
 master_data_list = []
-
-# ============ FIELD KEYS ============
+#  FIELD KEYS 
 FIELD_KEYS = ["ma_phong", "toa_nha", "loai_phong", "so_nguoi_toi_da",
               "so_nguoi_hien_tai", "gia_phong", "trang_thai", "ghi_chu"]
 
-# ============ SHOW MODULE ============
+#  SHOW MODULE 
 def show_room_management(root):
     global entries, tree, add_btn, update_btn, delete_btn, search_entry, master_data_list
     entries = {}
@@ -25,7 +24,7 @@ def show_room_management(root):
     root.geometry("1400x750")
     root.configure(bg="#f0f4f8")
 
-    # ===== HEADER =====
+    #  HEADER 
     header = tk.Frame(root, bg="#1e3a8a", height=80)
     header.pack(fill="x", side="top")
     header.pack_propagate(False)
@@ -34,7 +33,7 @@ def show_room_management(root):
     ttk.Button(header, text="⬅ Quay lại Trang chủ", command=lambda: go_back_to_home(root),
                style="Back.TButton").pack(side="right", padx=20, pady=15)
 
-    # ===== STYLE =====
+    #  STYLE 
     style = ttk.Style()
     style.theme_use("clam")
     style.configure("TFrame", background="#f0f4f8")
@@ -58,11 +57,11 @@ def show_room_management(root):
                     background="#1e3a8a", foreground="white")
     style.map("Back.TButton", background=[("active", "#2563eb")])
 
-    # ===== MAIN LAYOUT =====
+    #  MAIN LAYOUT 
     main_frame = tk.Frame(root, bg="#f0f4f8")
     main_frame.pack(fill="both", expand=True, padx=20, pady=15)
 
-    # --- LEFT FORM PANEL ---
+    #  LEFT FORM PANEL 
     left_frame = tk.Frame(main_frame, bg="white", bd=2, relief="groove")
     left_frame.pack(side="left", fill="y", padx=(0,15))
     left_frame.pack_propagate(False)
@@ -83,7 +82,7 @@ def show_room_management(root):
         entry.grid(row=i, column=1, sticky="w", padx=5, pady=6)
         entries[key] = entry
 
-    # --- BUTTONS ---
+    # BUTTONS   
     btn_frame = tk.Frame(left_frame, bg="white")
     btn_frame.pack(side="bottom", pady=15, padx=15, fill="x")
     add_btn = ttk.Button(btn_frame, text="➕ Thêm", style="Primary.TButton", command=lambda: add_room())
@@ -94,7 +93,7 @@ def show_room_management(root):
     delete_btn.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
     ttk.Button(btn_frame, text="↻ Làm mới", style="Secondary.TButton", command=lambda: clear_form()).grid(row=1, column=1, padx=5, pady=5, sticky="ew")
 
-    # --- RIGHT TREE PANEL ---
+    #  RIGHT TREE PANEL 
     right_frame = tk.Frame(main_frame, bg="white", bd=2, relief="groove")
     right_frame.pack(side="right", fill="both", expand=True)
 
@@ -130,7 +129,7 @@ def show_room_management(root):
     populate_data_from_db()
 
 
-# ============ FORM & CRUD ============
+#  FORM & CRUD 
 def get_form_data():
     result = []
     for k in FIELD_KEYS:

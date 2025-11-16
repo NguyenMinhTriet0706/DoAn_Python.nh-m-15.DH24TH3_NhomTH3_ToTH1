@@ -1,21 +1,20 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-# ==========================
 # TRANG CHỦ QUẢN LÝ KÝ TÚC XÁ
-# ==========================
+
 def show_home_page(root, username="Admin", role="Quản trị viên"):
     """Trang chủ sau khi đăng nhập thành công"""
     # Xóa giao diện cũ
     for widget in root.winfo_children():
         widget.destroy()
 
-    # ====== CẤU HÌNH CỬA SỔ ======
+    # CẤU HÌNH CỬA SỔ 
     root.title("🏫 Trang chủ - Hệ thống Quản lý Ký túc xá")
     root.geometry("1100x700")
     root.configure(bg="#f0f4ff")
 
-    # ====== HEADER ======
+    #  HEADER 
     header = tk.Frame(root, bg="#1e3a8a", height=90)
     header.pack(fill="x")
     tk.Label(
@@ -33,11 +32,11 @@ def show_home_page(root, username="Admin", role="Quản trị viên"):
         font=("Segoe UI", 12)
     ).pack()
 
-    # ====== MAIN CONTAINER ======
+    #  KHUNG CHÍNH
     main = tk.Frame(root, bg="#f0f4ff", padx=20, pady=20)
     main.pack(expand=True, fill="both")
 
-    # ====== STYLE ======
+    # KIỂU CHO BUTTON 
     style = ttk.Style()
     style.theme_use("clam")
 
@@ -67,7 +66,7 @@ def show_home_page(root, username="Admin", role="Quản trị viên"):
     )
     style.map("Logout.TButton", background=[("active", "#b91c1c")])
 
-    # ====== KHUNG CHỨC NĂNG ======
+    #  KHUNG CHỨC NĂNG 
     features_frame = tk.Frame(main, bg="#f0f4ff")
     features_frame.pack(expand=True, pady=40, fill="both")
 
@@ -81,7 +80,6 @@ def show_home_page(root, username="Admin", role="Quản trị viên"):
         ("📑 Quản lý Thanh Toán", "Lưu trữ và theo dõi thanh toán", lambda: open_payment_module(root)),
     ]
 
-    # ====== TẠO LƯỚI CÁC CARD (ĐẢM BẢO BẰNG NHAU) ======
     rows = 2
     cols = 3
     for i, (title, desc, cmd) in enumerate(buttons):
@@ -95,13 +93,13 @@ def show_home_page(root, username="Admin", role="Quản trị viên"):
         ttk.Button(card, text=title, style="Card.TButton", command=cmd).pack(padx=20, pady=(20, 10), fill="x")
         tk.Label(card, text=desc, bg="white", fg="#475569", font=("Segoe UI", 10), wraplength=200, justify="center").pack(padx=15, pady=(0,20))
 
-    # Căn đều lưới và cho card co giãn
+    # Cấu hình lưới để co giãn
     for c in range(cols):
         features_frame.grid_columnconfigure(c, weight=1)
     for r in range(rows):
         features_frame.grid_rowconfigure(r, weight=1)
 
-    # ====== FOOTER ======
+    #  CHÂN TRANG 
     footer = tk.Frame(root, bg="#1e3a8a", height=50)
     footer.pack(side="bottom", fill="x")
     ttk.Button(
@@ -118,10 +116,7 @@ def show_home_page(root, username="Admin", role="Quản trị viên"):
         font=("Segoe UI", 10)
     ).pack(side="left", padx=20)
 
-
-# ==========================
 # HÀM MỞ MODULE CON
-# ==========================
 def open_student_module(root):
     try:
         from app.modules.students import show_student_management

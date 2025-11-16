@@ -1,9 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from app.db import fetch_all, fetch_one, execute_non_query  # sử dụng DB thật
-# ==================================
+from app.db import fetch_all, fetch_one, execute_non_query
+
 # KHAI BÁO BIẾN TOÀN CỤC
-# ==================================
 entries = {}
 tree = None
 add_btn, update_btn, delete_btn = None, None, None
@@ -36,27 +35,23 @@ def show_student_management(root):
     for widget in root.winfo_children():
         widget.destroy()
 
-    # ====== CẤU HÌNH CỬA SỔ (Tối ưu cho 1366x768) ======
+    # CẤU HÌNH CỬA SỔ 
     root.title("👨‍🎓 Quản lý Sinh viên - Hệ thống Quản lý Ký túc xá")
     root.geometry("1280x670") 
     root.configure(bg="#f0f4ff")
 
-    # ============================
-    # ====== STYLE NÂNG CAO ======
-    # ============================
+    # STYLE NÂNG CAO 
     style = ttk.Style()
     style.theme_use("clam")
 
-    # --- Nền và Khung ---
-    style.configure("TFrame", background="#f0f4ff") # Nền xanh nhạt
-    style.configure("White.TFrame", background="white") # Nền trắng
-    
-    # --- Tiêu đề ---
+    style.configure("TFrame", background="#f0f4ff") 
+    style.configure("White.TFrame", background="white") 
+   
     style.configure("Title.TLabel", background="white", foreground="#1e3a8a", font=("Segoe UI", 16, "bold"))
     style.configure("Header.TLabel", background="white", foreground="#1e3a8a", font=("Segoe UI", 13, "bold"))
     style.configure("TLabel", background="white", foreground="#0f172a", font=("Segoe UI", 11))
                     
-    # --- Widget nhập liệu ---
+    #  Widget nhập liệu 
     style.configure("TEntry", fieldbackground="white", font=("Segoe UI", 11), padding=4)
     style.configure("TCombobox", fieldbackground="white", font=("Segoe UI", 11), padding=4)
     style.map("TCombobox",
@@ -66,33 +61,33 @@ def show_student_management(root):
         selectforeground=[('readonly', 'black')]
     )
 
-    # --- CÁC NÚT BẤM (MÀU NỔI BẬT HƠN) ---
+    #  CÁC NÚT BẤM  
     btn_padding = (10, 7)
     
-    # Nút Primary (Xanh da trời sáng)
+    # Nút Primary
     style.configure("Primary.TButton", font=("Segoe UI", 11, "bold"), padding=btn_padding,
                     background="#0ea5e9", foreground="white", borderwidth=0)
     style.map("Primary.TButton", 
               background=[("active", "#0284c7"), ("disabled", "#9ca3af")]) # active: xanh đậm hơn
 
-    # Nút Danger (Đỏ hồng)
+    # Nút Danger 
     style.configure("Danger.TButton", font=("Segoe UI", 11, "bold"), padding=btn_padding,
                     background="#e11d48", foreground="white", borderwidth=0)
     style.map("Danger.TButton", 
               background=[("active", "#be123c"), ("disabled", "#9ca3af")]) # active: đỏ đậm hơn
 
-    # Nút Secondary (Xám kim loại)
+    # Nút Secondary 
     style.configure("Secondary.TButton", font=("Segoe UI", 11, "bold"), padding=btn_padding,
                     background="#a1a1aa", foreground="white", borderwidth=0)
     style.map("Secondary.TButton", 
               background=[("active", "#71717a")]) # active: xám đậm hơn
 
-    # Nút Back (Giữ nguyên)
+    # Nút Back 
     style.configure("Back.TButton", font=("Segoe UI", 11, "bold"), padding=(10, 8),
                     background="#1e3a8a", foreground="white", borderwidth=0)
     style.map("Back.TButton", background=[("active", "#2563eb")])
               
-    # --- Treeview ---
+    #  Treeview 
     style.configure("Treeview.Heading", font=("Segoe UI", 11, "bold"), 
                     background="#e0e7ff", foreground="#1e3a8a", padding=10)
     style.configure("Treeview", font=("Segoe UI", 10), rowheight=27,
@@ -101,7 +96,7 @@ def show_student_management(root):
               background=[("selected", "#dbeafe")], 
               foreground=[("selected", "black")])
 
-    # --- Style cho Notebook (Tabs) ---
+    #  Style cho Notebook 
     style.configure("TNotebook", background="white", borderwidth=0)
     style.configure("TNotebook.Tab", 
                     font=("Segoe UI", 10, "bold"), 
@@ -113,9 +108,9 @@ def show_student_management(root):
     style.configure("TNotebook.Pane", background="white", borderwidth=1, 
                     relief="solid", bordercolor="#cbd5e1")
 
-    # ==========================
-    # ====== HEADER CHÍNH ======
-    # ==========================
+          
+    #  HEADER CHÍNH 
+    
     header = tk.Frame(root, bg="#1e3a8a", height=70)
     header.pack(fill="x", side="top") # Pack lên trên cùng
     header.pack_propagate(False)
@@ -125,46 +120,35 @@ def show_student_management(root):
     ttk.Button(header, text="⬅ Quay lại Trang chủ", style="Back.TButton",
                command=lambda: go_back_to_home(root)).pack(side="right", padx=20, pady=10)
 
+    #  BỐ CỤC CHÍNH 
     # ========================================
-    # ====== BỐ CỤC CHÍNH (Layout Ổn định) ======
-    # ========================================
-    
-    # Khung container chính
     main_container = ttk.Frame(root, style="TFrame", padding=(20, 15, 20, 20))
     main_container.pack(fill="both", expand=True, side="bottom")
     
-    # --- KHUNG ĐIỀU KHIỂN (BÊN TRÁI) ---
+    # KHUNG ĐIỀU KHIỂN (BÊN TRÁI) 
     left_wrapper = ttk.Frame(main_container, style="White.TFrame", 
                              borderwidth=1, relief="solid")
     left_wrapper.pack(side="left", fill="y", padx=(0, 15))
-    
-    # Dùng width=460 để đảm bảo không bị che
     left_pane = ttk.Frame(left_wrapper, style="White.TFrame", width=460)
     left_pane.pack(fill="y", expand=True)
-    # **QUAN TRỌNG: Chống co khung**
     left_pane.pack_propagate(False) 
-
     ttk.Label(left_pane, text="THÔNG TIN CHI TIẾT", style="Title.TLabel") \
        .pack(pady=(15, 10), padx=25, anchor="w")
-
-    # --- Tạo Notebook (Tabs) ---
+    #  Tạo Notebook (Tabs) 
     notebook = ttk.Notebook(left_pane, style="TNotebook")
     notebook.pack(fill="both", expand=True, padx=20, pady=0)
-
     tab_padding = (15, 10)
     tab1 = ttk.Frame(notebook, style="White.TFrame", padding=tab_padding)
     tab2 = ttk.Frame(notebook, style="White.TFrame", padding=tab_padding)
     tab3 = ttk.Frame(notebook, style="White.TFrame", padding=tab_padding)
-    
     notebook.add(tab1, text=" 👤  Cá nhân ")
     notebook.add(tab2, text=" 📞  Liên hệ & Học vấn ")
     notebook.add(tab3, text=" 🏨  Nội trú ")
-
     create_form_fields(tab1, FIELD_GROUPS["tab1"]["labels"], FIELD_GROUPS["tab1"]["keys"])
     create_form_fields(tab2, FIELD_GROUPS["tab2"]["labels"], FIELD_GROUPS["tab2"]["keys"])
     create_form_fields(tab3, FIELD_GROUPS["tab3"]["labels"], FIELD_GROUPS["tab3"]["keys"])
 
-    # --- Khung Nút Chức năng ---
+    #  Khung Nút Chức năng 
     button_frame = ttk.Frame(left_pane, style="White.TFrame", padding=(20, 10))
     button_frame.pack(fill="x", side="bottom")
 
@@ -180,12 +164,12 @@ def show_student_management(root):
     clear_btn.grid(row=1, column=1, padx=5, pady=4, sticky="ew")
 
 
-    # --- KHUNG DỮ LIỆU (BÊN PHẢI) ---
+    #  KHUNG DỮ LIỆU (BÊN PHẢI) 
     right_pane = ttk.Frame(main_container, style="White.TFrame",
                            borderwidth=1, relief="solid")
     right_pane.pack(side="right", fill="both", expand=True, padx=(0, 0))
 
-    # --- Header của Khung Dữ liệu ---
+    #  Header của Khung Dữ liệu 
     data_header = ttk.Frame(right_pane, style="White.TFrame")
     data_header.pack(fill="x", padx=15, pady=8)
     
@@ -200,7 +184,7 @@ def show_student_management(root):
        .pack(side="right", padx=(0, 10), pady=8)
     search_entry.bind("<Return>", lambda event: search_students())
     
-    # --- Khung Treeview ---
+    #  Khung Treeview 
     tree_container = ttk.Frame(right_pane, style="White.TFrame")
     tree_container.pack(fill="both", expand=True, padx=15, pady=(0, 10))
 
@@ -214,7 +198,7 @@ def show_student_management(root):
                         xscrollcommand=tree_scroll_x.set,
                         style="Treeview")
     
-    # --- ĐỊNH NGHĨA CỘT (ĐÃ THÊM stretch=tk.NO) ---
+    #  ĐỊNH NGHĨA CỘT
     tree.heading("ma_sv", text="Mã SV")
     tree.column("ma_sv", width=80, anchor="center", stretch=tk.NO)
     
@@ -266,10 +250,7 @@ def show_student_management(root):
     populate_sample_data()
     search_entry.focus()
 
-
-# ==================================
 # HÀM TẠO FORM PHỤ TRỢ
-# ==================================
 def create_form_fields(frame, labels, keys):
     global entries
     for i, (label_text, key) in enumerate(zip(labels, keys)):
@@ -290,9 +271,7 @@ def create_form_fields(frame, labels, keys):
         widget.grid(row=i, column=1, pady=6, padx=5, sticky="w")
         entries[key] = widget
 
-# ==================================
 # CÁC HÀM XỬ LÝ LOGIC (Không đổi)
-# ==================================
 
 def go_back_to_home(root):
     from app.ui.homepage import show_home_page
@@ -345,8 +324,6 @@ def on_student_select(event):
     selected_item = selected_item[0]
     values = tree.item(selected_item, "values")
     
-    # **ĐÂY LÀ THAY ĐỔI QUAN TRỌNG:**
-    # Gọi clear_form nhưng KHÔNG xóa lựa chọn trên Treeview
     clear_form(set_focus=False, clear_tree_selection=False) 
     
     for key, value in zip(ALL_FIELD_KEYS, values):
@@ -398,8 +375,7 @@ def populate_sample_data():
     refresh_all_data()
 
 
-# --- CÁC HÀM CRUD (SỬA LỖI PARENT) ---
-
+#  CÁC HÀM CRUD 
 def get_root_window():
     if add_btn:
         return add_btn.winfo_toplevel()

@@ -10,16 +10,16 @@ def show_login(root):
     for widget in root.winfo_children():
         widget.destroy()
 
-    # === Cấu hình cửa sổ ===
+    # Cấu hình cửa sổ
     root.title("🔐 Đăng nhập hệ thống Quản lý Ký túc xá")
     root.geometry("420x600")
     root.configure(bg="#eef2ff")
 
-    # === Khung đăng nhập ===
+    #  Khung đăng nhập 
     frame = tk.Frame(root, bg="white", bd=1, relief="solid", padx=20, pady=25)
     frame.place(relx=0.5, rely=0.5, anchor="center")
 
-    # === Tiêu đề ===
+    # Tiêu đề
     tk.Label(frame, text="ĐĂNG NHẬP HỆ THỐNG", font=("Segoe UI", 16, "bold"),
              fg="#1e40af", bg="white").pack(pady=(0, 20))
 
@@ -81,24 +81,24 @@ def show_login(root):
             entry_ma.delete(0, tk.END)
             return
 
-        # ==== Kiểm tra tài khoản ====
+        #  Kiểm tra tài khoản
         if ttk == "admin" and mk == "123456":
             messagebox.showinfo("Thành công", f"Chào mừng Nguyễn Minh Triết quay lại hệ thống!")
             show_home_page(root, username="Admin", role="Quản trị viên")
         else:
             messagebox.showerror("Đăng nhập thất bại", "Sai Tên tài khoản hoặc mật khẩu!")
 
-    # === Nút đăng nhập ===
+    #  Nút đăng nhập
     tk.Button(frame, text="🔑 Đăng nhập", font=("Segoe UI", 12, "bold"),
               bg="#1e40af", fg="white", relief="flat",
               command=dang_nhap).pack(fill="x", pady=(15, 5), ipady=5)
 
-    # === Nút quên mật khẩu ===
+    #  Nút quên mật khẩu 
     tk.Button(frame, text="Quên mật khẩu", font=("Segoe UI", 10),
               bg="#dbeafe", fg="#1e3a8a", relief="flat",
               command=lambda: messagebox.showinfo("Quên mật khẩu", "Liên hệ quản trị viên để được cấp lại tài khoản.")).pack(
         fill="x", ipady=4, pady=(5, 0))
 
-    # === Footer ===
+    # Chân trang
     tk.Label(frame, text="© 2025 Hệ thống Quản lý Ký túc xá Đại học An Giang",
              bg="white", fg="#9ca3af", font=("Segoe UI", 9)).pack(pady=10)

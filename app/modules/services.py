@@ -2,11 +2,9 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from tkcalendar import DateEntry
 from datetime import date
-from app.db import fetch_all, fetch_one, execute_non_query  # sử dụng DB thật
+from app.db import fetch_all, fetch_one, execute_non_query  
 
-# ===============================
-# BIẾN TOÀN CỤC
-# ===============================
+#   BIẾN TOÀN CỤC
 entries = {}
 tree = None
 add_btn, update_btn, delete_btn = None, None, None
@@ -29,10 +27,8 @@ FIELD_GROUPS = {
 }
 
 ALL_FIELD_KEYS = FIELD_GROUPS["tab1"]["keys"] + FIELD_GROUPS["tab2"]["keys"] + FIELD_GROUPS["tab3"]["keys"]
-
-# ===============================
-# HIỂN THỊ MODULE QUẢN LÝ DỊCH VỤ
-# ===============================
+  
+#   HIỂN THỊ MODULE QUẢN LÝ DỊCH VỤ  
 def show_service_management(root):
     global entries, tree, add_btn, update_btn, delete_btn, search_entry, master_data_list
     entries = {}
@@ -45,7 +41,7 @@ def show_service_management(root):
     root.geometry("1300x700")
     root.configure(bg="#e0f2fe")
 
-    # ===== STYLE =====
+    #  STYLE 
     style = ttk.Style()
     style.theme_use("clam")
     style.configure("TFrame", background="#e0f2fe")
@@ -69,7 +65,7 @@ def show_service_management(root):
                     background="#1e3a8a", foreground="white")
     style.map("Back.TButton", background=[("active", "#2563eb")])
 
-    # ===== HEADER =====
+    #  HEADER 
     header = tk.Frame(root, bg="#1e40af", height=70)
     header.pack(fill="x", side="top")
     header.pack_propagate(False)
@@ -78,11 +74,11 @@ def show_service_management(root):
     ttk.Button(header, text="⬅ Quay lại Trang chủ", command=lambda: go_back_to_home(root),
                style="Back.TButton").pack(side="right", padx=20, pady=10)
 
-    # ===== MAIN LAYOUT =====
+    #  MAIN LAYOUT 
     main_frame = tk.Frame(root, bg="#e0f2fe")
     main_frame.pack(fill="both", expand=True, padx=20, pady=15)
 
-    # --- LEFT PANEL (FORM + TAB) ---
+    #  LEFT PANEL 
     left_frame = tk.Frame(main_frame, bg="white", bd=2, relief="groove")
     left_frame.pack(side="left", fill="y", padx=(0, 15), pady=5)
     left_frame.pack_propagate(False)
@@ -104,7 +100,7 @@ def show_service_management(root):
     create_form_fields(tab2, FIELD_GROUPS["tab2"]["labels"], FIELD_GROUPS["tab2"]["keys"])
     create_form_fields(tab3, FIELD_GROUPS["tab3"]["labels"], FIELD_GROUPS["tab3"]["keys"])
 
-    # --- Button Frame ---
+    #  Button Frame 
     btn_frame = tk.Frame(left_frame, bg="white")
     btn_frame.pack(side="bottom", pady=10, padx=15, fill="x")
     btn_frame.grid_columnconfigure((0, 1), weight=1)
@@ -122,7 +118,7 @@ def show_service_management(root):
                                                                                                  padx=5, pady=5,
                                                                                                  sticky="ew")
 
-    # --- RIGHT PANEL (TREE) ---
+    #  RIGHT PANEL (TREE) 
     right_frame = tk.Frame(main_frame, bg="white", bd=2, relief="groove")
     right_frame.pack(side="right", fill="both", expand=True, pady=5)
 
@@ -156,17 +152,13 @@ def show_service_management(root):
     tree.bind("<<TreeviewSelect>>", on_tree_select)
 
 
-    # ===============================
-    # LOAD DATA TỪ DB
-    # ===============================
+    #   LOAD DATA TỪ DB
     try:
         populate_data_from_db()
     except Exception as e:
         messagebox.showerror("Lỗi DB", f"Không thể tải dữ liệu dịch vụ.\n{e}")
 
-# ===============================
-# TẠO FORM FIELD CHO TABS
-# ===============================
+#   TẠO FORM FIELD CHO TABS
 def create_form_fields(frame, labels, keys):
     global entries
     for i, (label, key) in enumerate(zip(labels, keys)):
@@ -185,9 +177,7 @@ def create_form_fields(frame, labels, keys):
         entry.grid(row=i, column=1, sticky="w", padx=5, pady=5)
         entries[key] = entry
 
-# ===============================
-# CRUD & XỬ LÝ
-# ===============================
+#  CÁC HÀM CRUD
 def get_form_data():
     result = []
     for k in ALL_FIELD_KEYS:
@@ -287,7 +277,7 @@ def update_service():
         messagebox.showwarning("Chưa chọn", "Vui lòng chọn dịch vụ để cập nhật.")
         return
 
-    data = get_form_data()  # (ma_dv, ten_dv, loai_dv, don_vi, don_gia, ngay_ap_dung, trang_thai, mo_ta)
+    data = get_form_data()  
     query = """
     UPDATE dichvu 
     SET ten_dv=?, loai_dv=?, don_vi=?, don_gia=?, ngay_ap_dung=?, trang_thai=?, mo_ta=? 

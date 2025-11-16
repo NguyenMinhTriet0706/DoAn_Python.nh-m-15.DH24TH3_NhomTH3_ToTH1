@@ -6,9 +6,7 @@ from datetime import date
 from app.db import fetch_all, execute_non_query
 import os
 
-# ===============================
 # BIẾN TOÀN CỤC
-# ===============================
 entries = {}
 tree = None
 add_btn = update_btn = delete_btn = print_btn = None
@@ -24,9 +22,6 @@ FIELD_LABELS = [
     "Mã HD:", "Mã SV:", "Mã Phòng:", "Ngày lập:", "Tháng:", "Năm:", "Tổng tiền:",
     "Trạng thái:", "Phương thức TT:", "Ngày thanh toán:", "Ghi chú:"
 ]
-
-# ===============================
-# HIỂN THỊ MODULE HÓA ĐƠN
 # ===============================
 def show_invoice_management(root):
     global entries, tree, add_btn, update_btn, delete_btn, print_btn, search_entry, master_data_list
@@ -41,7 +36,7 @@ def show_invoice_management(root):
     root.geometry("1350x700")
     root.configure(bg="#f0f4ff")
 
-    # ===== STYLE =====
+    #  STYLE 
     style = ttk.Style()
     style.theme_use("clam")
     style.configure("TFrame", background="#f0f4ff")
@@ -61,7 +56,7 @@ def show_invoice_management(root):
                     background="#1e3a8a", foreground="white")
     style.map("Back.TButton", background=[("active", "#2563eb")])
 
-    # ===== HEADER =====
+    #  HEADER 
     header = tk.Frame(root, bg="#1e3a8a", height=70)
     header.pack(fill="x", side="top")
     header.pack_propagate(False)
@@ -74,7 +69,7 @@ def show_invoice_management(root):
     main_frame = tk.Frame(root, bg="#f0f4ff")
     main_frame.pack(fill="both", expand=True, padx=20, pady=15)
 
-    # --- LEFT PANEL (FORM) ---
+    #  LEFT PANEL (FORM) 
     left_frame = tk.Frame(main_frame, bg="white", bd=2, relief="groove")
     left_frame.pack(side="left", fill="y", padx=(0, 15), pady=5)
     left_frame.pack_propagate(False)
@@ -87,7 +82,7 @@ def show_invoice_management(root):
     form_frame.pack(fill="both", expand=True, padx=10, pady=5)
     create_invoice_form(form_frame)
 
-    # --- BUTTONS ---
+    #  BUTTON FRAME 
     btn_frame = tk.Frame(left_frame, bg="white")
     btn_frame.pack(side="bottom", pady=10, padx=15, fill="x")
     btn_frame.grid_columnconfigure((0, 1), weight=1)
@@ -111,7 +106,7 @@ def show_invoice_management(root):
     save_btn = ttk.Button(btn_frame, text="💾 Lưu TXT", style="Secondary.TButton", command=save_invoices_to_txt)
     save_btn.grid(row=3, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
 
-    # --- RIGHT PANEL (TREE) ---
+    #  RIGHT PANEL (TREE) 
     right_frame = tk.Frame(main_frame, bg="white", bd=2, relief="groove")
     right_frame.pack(side="right", fill="both", expand=True, pady=5)
 
@@ -148,9 +143,7 @@ def show_invoice_management(root):
     populate_data_from_db()
 
 
-# ===============================
-# FORM
-# ===============================
+#  FORM 
 def create_invoice_form(frame):
     global entries
     for i, (label, key) in enumerate(zip(FIELD_LABELS, FIELD_KEYS)):
@@ -167,10 +160,7 @@ def create_invoice_form(frame):
         entry.grid(row=i, column=1, sticky="w", padx=5, pady=3)
         entries[key] = entry
 
-
-# ===============================
-# CRUD & XỬ LÝ
-# ===============================
+#  CÁC HÀM CRUD 
 def get_form_data():
     result = []
     for k in FIELD_KEYS:
@@ -346,7 +336,6 @@ def save_invoices_to_txt():
         messagebox.showerror("Lỗi", f"Không lưu được file: {e}")
 
 
-# QUAY VỀ HOMEPAGE
 def go_back_to_home(root):
     from app.ui.homepage import show_home_page
     show_home_page(root)

@@ -1,21 +1,16 @@
 import pyodbc
 import datetime
 
-# ============================================================
-# 🔧 CẤU HÌNH KẾT NỐI SQL SERVER
-# ============================================================
-DRIVER = "{ODBC Driver 17 for SQL Server}"  # hoặc "{SQL Server}"
-SERVER = r"LAPTOP-EU99C1O4\SQLEXPRESS"      # ⚠️ Thay bằng tên server thật của bạn
-DATABASE = "QUANLYKTX"                     # Tên database
-Trusted = True                             # True = Windows Authentication, False = SQL Authentication
-
-USER = "sa"                                # Chỉ dùng nếu Trusted = False
-PASSWORD = "123"                 # Chỉ dùng nếu Trusted = False
+#  CẤU HÌNH KẾT NỐI SQL SERVER
+DRIVER = "{ODBC Driver 17 for SQL Server}"  
+SERVER = r"LAPTOP-EU99C1O4\SQLEXPRESS"      
+DATABASE = "QUANLYKTX"                     
+Trusted = True                             
+USER = "sa"                                
+PASSWORD = "123"                 
 
 
-# ============================================================
-# 🧩 HÀM TẠO KẾT NỐI
-# ============================================================
+# HÀM TẠO KẾT NỐI
 def get_connection():
     """Tạo và trả về kết nối tới SQL Server"""
     try:
@@ -29,10 +24,7 @@ def get_connection():
         print(f"[{datetime.datetime.now().strftime('%H:%M:%S')}] ❌ Lỗi kết nối SQL Server:", e)
         return None
 
-
-# ============================================================
-# 📘 HÀM SELECT NHIỀU DÒNG
-# ============================================================
+# HÀM SELECT NHIỀU DÒNG
 def fetch_all(query, params=()):
     """
     Dùng cho SELECT nhiều dòng.
@@ -51,10 +43,7 @@ def fetch_all(query, params=()):
         print(f"[{datetime.datetime.now().strftime('%H:%M:%S')}] ❌ Lỗi fetch_all:", e)
         return []
 
-
-# ============================================================
-# 📗 HÀM SELECT 1 DÒNG DUY NHẤT
-# ============================================================
+# HÀM SELECT 1 DÒNG DUY NHẤT
 def fetch_one(query, params=()):
     """
     Dùng cho SELECT 1 dòng (ví dụ kiểm tra, đăng nhập, lấy chi tiết 1 bản ghi)
@@ -72,11 +61,8 @@ def fetch_one(query, params=()):
     except Exception as e:
         print(f"[{datetime.datetime.now().strftime('%H:%M:%S')}] ❌ Lỗi fetch_one:", e)
         return None
-
-
-# ============================================================
-# 🧾 HÀM INSERT / UPDATE / DELETE
-# ============================================================
+    
+# HÀM INSERT / UPDATE / DELETE
 def execute_non_query(query, params=()):
     """
     Dùng cho INSERT / UPDATE / DELETE.
@@ -99,10 +85,7 @@ def execute_non_query(query, params=()):
             pass
         return False
 
-
-# ============================================================
-# 🔹 HÀM KIỂM TRA KẾT NỐI SQL SERVER
-# ============================================================
+#  HÀM KIỂM TRA KẾT NỐI SQL SERVER
 def check_connection():
     """Kiểm tra kết nối SQL Server, in log ra console"""
     print(f"[{datetime.datetime.now().strftime('%H:%M:%S')}] 🔄 Đang kiểm tra kết nối SQL Server...")
@@ -115,14 +98,10 @@ def check_connection():
         print(f"[{datetime.datetime.now().strftime('%H:%M:%S')}] ❌ Không thể kết nối tới SQL Server")
         return False
 
-
-# ============================================================
-# 🧪 TỰ ĐỘNG KIỂM TRA KẾT NỐI KHI IMPORT
-# ============================================================
+# TỰ ĐỘNG KIỂM TRA KẾT NỐI KHI IMPORT
 if __name__ != "__main__":
     check_connection()
 else:
-    # Nếu chạy trực tiếp file db.py để test
     check_connection()
     print("\n📋 Danh sách 5 sinh viên đầu tiên:")
     rows = fetch_all("SELECT TOP 5 * FROM sinhvien")
