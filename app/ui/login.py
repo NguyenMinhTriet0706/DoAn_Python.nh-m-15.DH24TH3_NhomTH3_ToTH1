@@ -1,12 +1,12 @@
 import tkinter as tk
 from tkinter import messagebox
 import random
-from app.ui.homepage import show_home_page
-
+from app.db import fetch_one  
+from app.ui.homepage import show_home_page  
 
 def show_login(root):
-    """Hiển thị giao diện đăng nhập vào hệ thống Ký túc xá"""
-    # Xóa mọi widget cũ (nếu có)
+    """Hiển thị giao diện đăng nhập hệ thống KTX"""
+    # Xóa mọi widget cũ
     for widget in root.winfo_children():
         widget.destroy()
 
@@ -15,7 +15,7 @@ def show_login(root):
     root.geometry("420x600")
     root.configure(bg="#eef2ff")
 
-    #  Khung đăng nhập 
+    # Khung login
     frame = tk.Frame(root, bg="white", bd=1, relief="solid", padx=20, pady=25)
     frame.place(relx=0.5, rely=0.5, anchor="center")
 
@@ -23,55 +23,53 @@ def show_login(root):
     tk.Label(frame, text="ĐĂNG NHẬP HỆ THỐNG", font=("Segoe UI", 16, "bold"),
              fg="#1e40af", bg="white").pack(pady=(0, 20))
 
-    #  Nhập Tên Tài Khoản
-    tk.Label(frame, text="Tên tài Khoản:", font=("Segoe UI", 11), bg="white", anchor="w").pack(fill="x")
+    # Tên tài khoản
+    tk.Label(frame, text="Tên tài khoản:", font=("Segoe UI", 11), bg="white", anchor="w").pack(fill="x")
     entry_ttk = tk.Entry(frame, font=("Segoe UI", 11))
     entry_ttk.pack(fill="x", ipady=6, pady=(0, 10))
+    entry_ttk.focus()  # đặt con trỏ vào ô đầu tiên
 
-    #  Nhập mật khẩu
+    # Mật khẩu
     tk.Label(frame, text="Mật khẩu:", font=("Segoe UI", 11), bg="white", anchor="w").pack(fill="x")
     entry_mk = tk.Entry(frame, font=("Segoe UI", 11), show="*")
     entry_mk.pack(fill="x", ipady=6, pady=(0, 5))
 
-    # Nút hiện/ẩn mật khẩu 
+    # Hiện/ẩn mật khẩu
     show_var = tk.BooleanVar(value=False)
-
     def toggle_password():
         entry_mk.config(show="" if show_var.get() else "*")
-
     tk.Checkbutton(frame, text="Hiện mật khẩu", variable=show_var,
                    bg="white", font=("Segoe UI", 9),
                    command=toggle_password).pack(anchor="w")
+
     # Mã xác thực
     tk.Label(frame, text="Mã xác thực:", font=("Segoe UI", 11), bg="white", anchor="w").pack(fill="x", pady=(10, 0))
     ma_xac_thuc = tk.StringVar()
-
     lbl_ma = tk.Label(frame, text="", font=("Segoe UI", 14, "bold"),
                       bg="#1e3a8a", fg="white", width=12)
-    lbl_ma.pack(pady=(5, 5))
+    lbl_ma.pack(pady=(5,5))
 
     def tao_ma():
         ma = str(random.randint(10000, 99999))
         ma_xac_thuc.set(ma)
         lbl_ma.config(text=ma)
-
     tao_ma()  # tạo mã ban đầu
 
-    # Ô nhập mã
+    # Entry mã xác thực
     entry_ma = tk.Entry(frame, font=("Segoe UI", 11))
-    entry_ma.pack(fill="x", ipady=6, pady=(5, 5))
+    entry_ma.pack(fill="x", ipady=6, pady=(5,5))
 
     # Nút làm mới mã
     tk.Button(frame, text="↻ Làm mới mã", font=("Segoe UI", 10, "bold"),
-              bg="#e0e7ff", relief="flat", command=tao_ma).pack(pady=(0, 10))
+              bg="#e0e7ff", relief="flat", command=tao_ma).pack(pady=(0,10))
 
-    # Xử lý đăng nhập 
+    # Nút đăng nhập
     def dang_nhap():
-        ttk = entry_ttk.get().strip()
-        mk = entry_mk.get().strip()
+        ttk_val = entry_ttk.get().strip()
+        mk_val = entry_mk.get().strip()
         ma_nhap = entry_ma.get().strip()
 
-        if not ttk or not mk or not ma_nhap:
+        if not ttk_val or not mk_val or not ma_nhap:
             messagebox.showwarning("Thiếu thông tin", "Vui lòng nhập đầy đủ thông tin!")
             return
 
@@ -81,23 +79,28 @@ def show_login(root):
             entry_ma.delete(0, tk.END)
             return
 
-        #  Kiểm tra tài khoản
-        if ttk == "admin" and mk == "123456":
-            messagebox.showinfo("Thành công", f"Chào mừng Nguyễn Minh Triết quay lại hệ thống!")
-            show_home_page(root, username="Admin", role="Quản trị viên")
+        # Kiểm tra tài khoản từ csdl
+        user = fetch_one(
+            "SELECT * FROM taikhoan WHERE ten_dang_nhap=? AND mat_khau=?",
+            (ttk_val, mk_val)
+        )
+
+        if user:
+            role = user[2] if len(user) > 2 else "Quản trị viên"
+            messagebox.showinfo("Thành công", f"Chào mừng {ttk_val} quay lại hệ thống!")
+            show_home_page(root, username=ttk_val, role=role)
         else:
             messagebox.showerror("Đăng nhập thất bại", "Sai Tên tài khoản hoặc mật khẩu!")
 
-    #  Nút đăng nhập
     tk.Button(frame, text="🔑 Đăng nhập", font=("Segoe UI", 12, "bold"),
               bg="#1e40af", fg="white", relief="flat",
-              command=dang_nhap).pack(fill="x", pady=(15, 5), ipady=5)
+              command=dang_nhap).pack(fill="x", pady=(15,5), ipady=5)
 
-    #  Nút quên mật khẩu 
+    # Nút quên mật khẩu
     tk.Button(frame, text="Quên mật khẩu", font=("Segoe UI", 10),
               bg="#dbeafe", fg="#1e3a8a", relief="flat",
-              command=lambda: messagebox.showinfo("Quên mật khẩu", "Liên hệ quản trị viên để được cấp lại tài khoản.")).pack(
-        fill="x", ipady=4, pady=(5, 0))
+              command=lambda: messagebox.showinfo("Quên mật khẩu", "Liên hệ quản trị viên để được cấp lại tài khoản.")
+             ).pack(fill="x", ipady=4, pady=(5,0))
 
     # Chân trang
     tk.Label(frame, text="© 2025 Hệ thống Quản lý Ký túc xá Đại học An Giang",

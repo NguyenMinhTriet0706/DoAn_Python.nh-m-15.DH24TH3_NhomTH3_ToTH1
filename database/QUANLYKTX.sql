@@ -1,13 +1,10 @@
-﻿-- ===========================================
--- TẠO DATABASE QUẢN LÝ KÝ TÚC XÁ
--- ===========================================
-CREATE DATABASE QUANLYKTX;
+﻿CREATE DATABASE QUANLYKTX;
 GO
 USE QUANLYKTX;
 GO
 
 -- ===========================================
--- 1️⃣ BẢNG TÀI KHOẢN
+-- 1️ BẢNG TÀI KHOẢN
 -- ===========================================
 CREATE TABLE taikhoan (
     ten_dang_nhap NVARCHAR(50) PRIMARY KEY,
@@ -18,12 +15,12 @@ GO
 
 -- DỮ LIỆU MẪU TÀI KHOẢN
 INSERT INTO taikhoan VALUES
-('admin', N'123456', N'admin')
+('admin', N'123', N'admin')
 
 GO
 
 -- ===========================================
--- 2️⃣ BẢNG SINH VIÊN
+-- 2️ BẢNG SINH VIÊN
 -- ===========================================
 CREATE TABLE sinhvien (
     ma_sv NVARCHAR(10) PRIMARY KEY,
@@ -56,7 +53,7 @@ INSERT INTO sinhvien VALUES
 GO
 
 -- ===========================================
--- 3️⃣ BẢNG NHÂN VIÊN
+-- 3️ BẢNG NHÂN VIÊN
 -- ===========================================
 CREATE TABLE nhanvien (
     ma_nv NVARCHAR(10) PRIMARY KEY,
@@ -90,7 +87,7 @@ INSERT INTO nhanvien VALUES
 GO
 
 -- ===========================================
--- 4️⃣ BẢNG PHÒNG (giữ nguyên, thêm dữ liệu mẫu 8 dòng)
+-- 4️ BẢNG PHÒNG 
 -- ===========================================
 CREATE TABLE phong (
     ma_phong NVARCHAR(10) PRIMARY KEY,
@@ -116,7 +113,7 @@ INSERT INTO phong VALUES
 GO
 
 -- ===========================================
--- 5️⃣ BẢNG DỊCH VỤ (8 dòng mẫu)
+-- 5️ BẢNG DỊCH VỤ 
 -- ===========================================
 CREATE TABLE dichvu (
     ma_dv NVARCHAR(10) PRIMARY KEY,
@@ -142,7 +139,7 @@ INSERT INTO dichvu VALUES
 GO
 
 -- ===========================================
--- 6️⃣ BẢNG HÓA ĐƠN (8 dòng mẫu)
+-- 6️ BẢNG HÓA ĐƠN 
 -- ===========================================
 CREATE TABLE hoadon (
     ma_hd NVARCHAR(10) PRIMARY KEY,
@@ -169,12 +166,11 @@ INSERT INTO hoadon VALUES
 ('HD06', 'SV06', 'P201', GETDATE(), 10, 2025, 3000000, N'Đã thanh toán', N'Chuyển khoản', GETDATE(), N'Đủ tiền'),
 ('HD07', 'SV07', 'P202', GETDATE(), 10, 2025, 2100000, N'Đang xử lý', N'Chuyển khoản', NULL, N'Đang xác minh'),
 ('HD08', 'SV08', 'P203', GETDATE(), 10, 2025, 1950000, N'Chưa thanh toán', N'Tiền mặt', NULL, N'');
-INSERT INTO hoadon VALUES 
-('HD09', 'SV09','P203', GETDATE(),9,2025,2000000,N'Chưa Thanh Toán',N'Chuyển Khoản',NULL,N'');
+
 GO
 
 -- ===========================================
--- 7️⃣ BẢNG THANH TOÁN (8 dòng mẫu)
+-- 7️ BẢNG THANH TOÁN 
 -- ===========================================
 CREATE TABLE thanhtoan (
     ma_tt NVARCHAR(10) PRIMARY KEY,
@@ -189,6 +185,7 @@ CREATE TABLE thanhtoan (
     trang_thai NVARCHAR(50) DEFAULT N'Chưa xác nhận',
     nguoi_thuc_hien NVARCHAR(100),
     ghi_chu NVARCHAR(255),
+
     FOREIGN KEY (ma_hd) REFERENCES hoadon(ma_hd),
     FOREIGN KEY (ma_dv) REFERENCES dichvu(ma_dv)
 );
@@ -207,4 +204,12 @@ INSERT INTO thanhtoan (
 ('TT08', 'HD07', 'DV02', 15, 15000, 10, 2025, GETDATE(), N'Đang xử lý', N'Lý Văn H', N'Tiền nước tháng 10');
 
 
-select *from nhanvien
+select *from sinhvien
+
+
+UPDATE taikhoan
+SET mat_khau = N'123456'
+WHERE ten_dang_nhap = 'admin';
+
+DELETE FROM hoadon
+WHERE ma_hd = 'HD09';
