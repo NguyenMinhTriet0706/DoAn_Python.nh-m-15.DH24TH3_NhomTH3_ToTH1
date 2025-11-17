@@ -5,6 +5,7 @@ from app.db import fetch_one
 from app.ui.homepage import show_home_page  
 
 def show_login(root):
+    root.attributes("-fullscreen", True)
     """Hiển thị giao diện đăng nhập hệ thống KTX"""
     # Xóa mọi widget cũ
     for widget in root.winfo_children():
@@ -36,6 +37,8 @@ def show_login(root):
 
     # Hiện/ẩn mật khẩu
     show_var = tk.BooleanVar(value=False)
+    root.bind("<Escape>", lambda e: root.attributes("-fullscreen", False))
+
     def toggle_password():
         entry_mk.config(show="" if show_var.get() else "*")
     tk.Checkbutton(frame, text="Hiện mật khẩu", variable=show_var,
@@ -105,3 +108,4 @@ def show_login(root):
     # Chân trang
     tk.Label(frame, text="© 2025 Hệ thống Quản lý Ký túc xá Đại học An Giang",
              bg="white", fg="#9ca3af", font=("Segoe UI", 9)).pack(pady=10)
+
