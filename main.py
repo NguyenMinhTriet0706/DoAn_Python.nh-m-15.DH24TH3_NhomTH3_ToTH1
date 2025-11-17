@@ -1,11 +1,9 @@
 import tkinter as tk
 from tkinter import messagebox
 from app.ui.login import show_login
-from app.db import get_connection  # import hàm get_connection từ db.py
+from app.db import get_connection  
 
-# ============================================================
-# 🔹 HÀM KIỂM TRA KẾT NỐI SQL SERVER
-# ============================================================
+#  HÀM KIỂM TRA KẾT NỐI SQL SERVER
 def check_db_connection():
     """
     Kiểm tra kết nối tới SQL Server trước khi mở GUI.
@@ -23,9 +21,7 @@ def check_db_connection():
         )
         return False
 
-# ============================================================
-# 🔹 CHƯƠNG TRÌNH CHÍNH
-# ============================================================
+#  CHƯƠNG TRÌNH CHÍNH
 def main():
     if not check_db_connection():
         return  # Dừng chương trình nếu không kết nối được
