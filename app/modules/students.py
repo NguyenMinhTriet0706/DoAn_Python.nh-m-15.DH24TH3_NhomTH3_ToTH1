@@ -366,7 +366,8 @@ def populate_sample_data():
     global master_data_list, tree
     master_data_list = []
 
-    query = "SELECT ma_sv, ho_ten, ngay_sinh, gioi_tinh, cmnd_cccd, sdt, email, que_quan, khoa, lop, phong, ngay_vao, trang_thai, ghi_chu FROM sinhvien"
+    query = "SELECT ma_sv, ho_ten, ngay_sinh, gioi_tinh, cmnd_cccd, sdt, email, " \
+    "que_quan, khoa, lop, phong, ngay_vao, trang_thai, ghi_chu FROM sinhvien"
     rows = fetch_all(query)
 
     for row in rows:

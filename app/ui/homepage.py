@@ -91,7 +91,8 @@ def show_home_page(root, username="Admin", role="Quản trị viên"):
 
         # Nút và mô tả
         ttk.Button(card, text=title, style="Card.TButton", command=cmd).pack(padx=20, pady=(20, 10), fill="x")
-        tk.Label(card, text=desc, bg="white", fg="#475569", font=("Segoe UI", 10), wraplength=200, justify="center").pack(padx=15, pady=(0,20))
+        tk.Label(card, text=desc, bg="white", fg="#475569", font=("Segoe UI", 10), 
+                 wraplength=200, justify="center").pack(padx=15, pady=(0,20))
 
     # Cấu hình lưới để co giãn
     for c in range(cols):
